@@ -5,13 +5,16 @@ import { SidebarTrigger, useSidebar } from './ui/sidebar';
 import { Button } from './ui/button';
 
 export const Navigators = () => {
-  const { state, open, openMobile, toggleSidebar } = useSidebar();
+  const { state, open, openMobile, isMobile, toggleSidebar } = useSidebar();
+
+  const setNavWidth = () => {
+    if (!isMobile) {
+      return open ? 'w-[calc(100vw_-_16rem)]' : 'w-[100vw]';
+    }
+    return 'w-[100vw]';
+  };
   return (
-    <div
-      className={`flex flex-col ${
-        open ? 'w-[calc(100vw_-_16rem)]' : 'w-[100vw]'
-      } flex-1 `}
-    >
+    <div className={`flex flex-col flex-1 ${setNavWidth()}`}>
       <section className="w-full flex justify-between p-2">
         <div className="flex items-center space-x-2 mx-2">
           <SidebarTrigger className="mt-2 border rounded-md p-2" />

@@ -1,16 +1,16 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import { Weather } from '../app/components/weather';
+import { Quiz } from '../app/components/quiz';
 import { Input } from './ui/input';
 import { Card } from './ui/card';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Paperclip } from 'lucide-react';
 import { Button } from './ui/button';
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
   return (
-    <div className="max-h-screen group w-full overflow-auto">
+    <div className="flex-1 group w-full overflow-auto px-2">
       <div className="h-[90%] flex-1 max-w-xl mx-auto mt-10 mb-24">
         {messages.map((message) => (
           <div key={message.id} className="whitespace-pre-wrap flex mb-5">
@@ -29,19 +29,19 @@ export default function Chat() {
                 const { toolName, toolCallId, state } = toolInvocation;
 
                 if (state === 'result') {
-                  if (toolName === 'displayWeather') {
+                  if (toolName === 'generateQuiz') {
                     const { result } = toolInvocation;
                     return (
                       <div key={toolCallId}>
-                        <Weather {...result} />
+                        <Quiz {...result} />
                       </div>
                     );
                   }
                 } else {
                   return (
                     <div key={toolCallId}>
-                      {toolName === 'displayWeather' ? (
-                        <div>Loading weather...</div>
+                      {toolName === 'generateQuiz' ? (
+                        <div>Loading quiz...</div>
                       ) : null}
                     </div>
                   );
@@ -53,18 +53,24 @@ export default function Chat() {
       </div>
       <div className=" bg-white  sticky mx-auto bottom-0 w-full h-[20%]">
         <div className="w-full max-w-xl mx-auto">
-          <Card className="p-2">
-            <form onSubmit={handleSubmit}>
-              <div className="flex">
+          <Card className="group focus-within:ring-2 focus-within:ring-black p-2 bg-slate-100">
+            <form onSubmit={handleSubmit} className="space-y-2">
+              <div>
                 <Input
+                  minLength={2}
                   type="text"
                   value={input}
                   onChange={handleInputChange}
-                  className="w-[95%] mr-2 border-0 ring-offset-0 focus-visible:ring-0 focus-visible:outline-none focus:outline-none focus:ring-0 ring-0 focus-visible:border-none border-transparent focus:border-transparent focus-visible:ring-none"
-                  placeholder="Ask me anything..."
+                  className="w-full focus:outline-none border-none focus-visible:ring-0 focus:border-none focus:ring-0"
+                  placeholder="What quiz would you like to take today..."
                 />
-                <Button disabled={!input.trim()}>
-                  <ArrowUp />
+              </div>
+              <div className="flex justify-between items-center">
+                <Button variant="ghost" className="p-2">
+                  <Paperclip className="-rotate-45" />
+                </Button>
+                <Button disabled={!input.trim()} className="p-2 rounded-full">
+                  <ArrowUp size={24} />
                 </Button>
               </div>
             </form>
