@@ -3,9 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getQuizById } from '../ai/tools';
 
 interface Question {
   question: string;
@@ -20,8 +18,6 @@ interface QuizData {
 }
 
 export default function QuizPage() {
-  // const router = useRouter();
-  // const { data } = router.query;
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 

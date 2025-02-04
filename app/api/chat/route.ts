@@ -1,7 +1,6 @@
 import { tools } from '@/app/ai/tools';
 import { streamText } from 'ai';
 import { openai } from '@ai-sdk/openai';
-import { deepseek } from '@ai-sdk/deepseek';
 
 export async function POST(request: Request) {
   const { messages } = await request.json();
