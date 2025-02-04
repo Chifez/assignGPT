@@ -1,9 +1,13 @@
 import { tool as createTool } from 'ai';
 import { z } from 'zod';
+import { nanoid } from 'nanoid';
+
+// Temporary in-memory store (Replace with DB if needed)
+const quizStore = new Map<string, any>();
 
 export const quizTool = createTool({
   description:
-    'Generate a quiz with a title, number of questions, the quiz questions, options, and answers in JSON, along with a dynamic link.',
+    'Generate a quiz with a title, number of questions, and a dynamic short link.',
   parameters: z.object({
     title: z.string().describe('The title of the quiz'),
     numQuestions: z
@@ -19,13 +23,22 @@ export const quizTool = createTool({
     }));
 
     const quizData = { title, numQuestions, questions };
-    const quizContent = encodeURIComponent(JSON.stringify(quizData));
-    const quizLink = `/quiz?data=${quizContent}`;
+    const quizId = nanoid(6); // Generate a short ID
 
-    return { title, numQuestions, questions, link: quizLink };
+    // Store quiz in memory (Replace with DB if needed)
+    // localStorage.setItem(quizId, JSON.stringify(quizData));
+
+    const quizLink = `/quiz?token=${quizId}`;
+
+    return { title, numQuestions, link: quizLink };
   },
 });
 
 export const tools = {
   generateQuiz: quizTool,
 };
+
+// Helper function to get quiz by ID (For retrieval on Quiz page)
+export function getQuizById(id: string) {
+  return quizStore.get(id) || null;
+}
