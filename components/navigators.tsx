@@ -6,15 +6,17 @@ import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import LoginPage from './auth/page';
+import { useUserStore } from '@/utils/store/userStore';
+import { useState } from 'react';
 
 export const Navigators = () => {
   const { state, open, openMobile, isMobile, toggleSidebar } = useSidebar();
+  const { user, setUser } = useUserStore();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const setNavWidth = () => {
     if (!isMobile) {
@@ -22,6 +24,7 @@ export const Navigators = () => {
     }
     return 'w-[100vw]';
   };
+
   return (
     <div className={`flex flex-col flex-1 ${setNavWidth()}`}>
       <section className="w-full flex justify-between p-2">
@@ -41,15 +44,19 @@ export const Navigators = () => {
             </Button>
           )}
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Login</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle className="sr-only">login</DialogTitle>
-            <LoginPage />
-          </DialogContent>
-        </Dialog>
+        {user == null ? (
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>Login</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle className="sr-only">login</DialogTitle>
+              <LoginPage onSuccess={() => setDialogOpen(false)} />
+            </DialogContent>
+          </Dialog>
+        ) : (
+          <p>{user?.email}</p>
+        )}
       </section>
     </div>
   );

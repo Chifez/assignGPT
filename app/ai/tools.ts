@@ -1,9 +1,8 @@
 import { tool as createTool } from 'ai';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
-
-// Temporary in-memory store (Replace with DB if needed)
-const quizStore = new Map<string, any>();
+import { useQuizStore } from '@/utils/store/quizStore';
+import { setServerQuiz } from '@/utils/quiz-server-store';
 
 export const quizTool = createTool({
   description:
@@ -22,14 +21,14 @@ export const quizTool = createTool({
       answer: 'Option A',
     }));
 
-    const quizData = { title, numQuestions, questions };
-    const quizId = nanoid(6); // Generate a short ID
+    const quizId = nanoid(6);
+    const quizData = { id: quizId, title, numQuestions, questions };
 
-    // Store quiz in memory (Replace with DB if needed)
-    // localStorage.setItem(quizId, JSON.stringify(quizData));
+    // need to store this to the Db
+    useQuizStore.getState().setQuiz(quizId, title, numQuestions, questions);
+    setServerQuiz(quizId, quizData);
 
     const quizLink = `/quiz?token=${quizId}`;
-
     return { title, numQuestions, link: quizLink };
   },
 });
@@ -37,8 +36,3 @@ export const quizTool = createTool({
 export const tools = {
   generateQuiz: quizTool,
 };
-
-// Helper function to get quiz by ID (For retrieval on Quiz page)
-export function getQuizById(id: string) {
-  return quizStore.get(id) || null;
-}

@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Calendar,
-  Home,
-  Inbox,
-  LogOut,
-  Plus,
-  Search,
-  Settings,
-} from 'lucide-react';
+import { LogOut, Plus } from 'lucide-react';
 
 import {
   Sidebar,
@@ -23,6 +15,9 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useState } from 'react';
+import { useUserStore } from '@/utils/store/userStore';
+import { createClient } from '@/utils/supabase/client';
+import { toast } from 'sonner';
 
 // history interface
 
@@ -32,7 +27,15 @@ interface History {
 }
 
 export function AppSidebar() {
+  const { user, setUser } = useUserStore();
   const [history, setHistory] = useState<History[]>([]);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    toast.success('Signed out successfully');
+  };
 
   return (
     <Sidebar>
@@ -59,10 +62,15 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarFooter className="absolute bottom-0 mx-auto w-full flex flex-row items-center justify-center gap-1">
-          logout
-          <LogOut />
-        </SidebarFooter>
+        {user && (
+          <SidebarFooter
+            onClick={handleSignOut}
+            className="absolute bottom-0 mx-auto w-full flex flex-row items-center justify-center gap-1"
+          >
+            logout
+            <LogOut />
+          </SidebarFooter>
+        )}
       </SidebarContent>
     </Sidebar>
   );

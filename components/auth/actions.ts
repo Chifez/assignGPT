@@ -1,46 +1,44 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-
 import { createClient } from '@/utils/supabase/server';
-
-export async function login(formData: FormData) {
-  const supabase = await createClient();
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
-
-  if (error) {
-    redirect('/error');
-  }
-
-  revalidatePath('/', 'layout');
-  redirect('/account');
-}
+import { redirect } from 'next/navigation';
 
 export async function signup(formData: FormData) {
   const supabase = await createClient();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  };
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error, data } = await supabase.auth.signUp({
+    email,
+    password,
+  });
 
   if (error) {
-    redirect('/error');
+    console.log('error', error);
+    return redirect('/error');
   }
 
-  revalidatePath('/', 'layout');
-  redirect('/account');
+  // Show success toast and return user data
+  return { success: true, message: 'Signup successful!', user: data.user };
+}
+
+export async function login(formData: FormData) {
+  const supabase = await createClient();
+
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  const { error, data } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.log('error', error);
+    return redirect('/error');
+  }
+
+  // Show success toast and return user data
+  return { success: true, message: 'Login successful!', user: data.user };
 }

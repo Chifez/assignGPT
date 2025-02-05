@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface Question {
@@ -16,92 +16,12 @@ interface QuizData {
   numQuestions: number;
   questions: Question[];
 }
-const Quiz = {
-  title: 'JavaScript Fundamentals Quiz',
-  numQuestions: 10,
-  questions: [
-    {
-      question:
-        "What is the correct syntax for referring to an external script called 'script.js'?",
-      options: [
-        "<script src='script.js'>",
-        "<script href='script.js'>",
-        "<script ref='script.js'>",
-        "<script name='script.js'>",
-      ],
-      answer: "<script src='script.js'>",
-    },
-    {
-      question: 'How do you declare a JavaScript variable?',
-      options: ['var myVar;', 'variable myVar;', 'v myVar;', 'let: myVar;'],
-      answer: 'var myVar;',
-    },
-    {
-      question: 'Which of the following is NOT a JavaScript data type?',
-      options: ['String', 'Boolean', 'Float', 'Undefined'],
-      answer: 'Float',
-    },
-    {
-      question: 'What will `console.log(typeof [])` output?',
-      options: ["'array'", "'object'", "'null'", "'undefined'"],
-      answer: "'object'",
-    },
-    {
-      question:
-        'Which keyword is used to define a constant variable in JavaScript?',
-      options: ['let', 'var', 'const', 'static'],
-      answer: 'const',
-    },
-    {
-      question: 'What does the `===` operator do in JavaScript?',
-      options: [
-        'Checks both value and type',
-        'Checks value only',
-        'Assigns a value',
-        'Compares only types',
-      ],
-      answer: 'Checks both value and type',
-    },
-    {
-      question:
-        'Which of the following is a correct way to write an arrow function?',
-      options: [
-        'function myFunc() => {}',
-        'const myFunc = () => {}',
-        'arrow myFunc = () {}',
-        'let myFunc() => {}',
-      ],
-      answer: 'const myFunc = () => {}',
-    },
-    {
-      question: 'What is the output of `console.log(0.1 + 0.2 === 0.3)`?',
-      options: ['true', 'false', 'undefined', 'TypeError'],
-      answer: 'false',
-    },
-    {
-      question: 'How can you convert a string into an integer in JavaScript?',
-      options: [
-        'Number.parseInt()',
-        'toInteger()',
-        'parseInt()',
-        "Both 'Number.parseInt()' and 'parseInt()'",
-      ],
-      answer: "Both 'Number.parseInt()' and 'parseInt()'",
-    },
-    {
-      question:
-        'Which method is used to add a new element to the end of an array?',
-      options: ['push()', 'append()', 'add()', 'insert()'],
-      answer: 'push()',
-    },
-  ],
-};
 
 export default function QuizPage() {
-  // const searchParams = useSearchParams();
-  // const token = searchParams.get('token');
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
 
-  const [quiz, setQuiz] = useState<QuizData | null>(Quiz);
+  const [quiz, setQuiz] = useState<QuizData | undefined>(undefined);
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [score, setScore] = useState<null | number>(null);
 
@@ -113,21 +33,32 @@ export default function QuizPage() {
   };
 
   const handleSubmit = () => {
+    if (!quiz) return;
+
     let currentScore = 0;
-    quiz?.questions.forEach((item, index) => {
-      userAnswers[index] === item.answer;
-      currentScore++;
+    quiz.questions.forEach((item, index) => {
+      if (userAnswers[index] === item.answer) {
+        currentScore++;
+      }
     });
     setScore(currentScore);
   };
 
   // useEffect(() => {
   //   if (token) {
-  //     const fetchedQuiz = localStorage.getItem(token);
+  //     // Try to get quiz from Zustand first
+  //     let fetchedQuiz = getQuizById(token);
 
-  //     if (fetchedQuiz) setQuiz(JSON.parse(fetchedQuiz));
+  //     // If not in Zustand, try to get from server
+  //     if (!fetchedQuiz) {
+  //       fetchedQuiz = getServerQuiz(token);
+  //     }
+
+  //     if (fetchedQuiz) {
+  //       setQuiz(fetchedQuiz);
+  //     }
   //   }
-  // }, [token]);
+  // }, [token, getQuizById]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
