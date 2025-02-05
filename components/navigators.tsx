@@ -3,6 +3,15 @@
 import { Plus } from 'lucide-react';
 import { SidebarTrigger, useSidebar } from './ui/sidebar';
 import { Button } from './ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import LoginPage from './auth/page';
 
 export const Navigators = () => {
   const { state, open, openMobile, isMobile, toggleSidebar } = useSidebar();
@@ -32,9 +41,15 @@ export const Navigators = () => {
             </Button>
           )}
         </div>
-        <div>
-          <Button>Login</Button>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Login</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle className="sr-only">login</DialogTitle>
+            <LoginPage />
+          </DialogContent>
+        </Dialog>
       </section>
     </div>
   );

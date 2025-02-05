@@ -1,6 +1,14 @@
 'use client';
 
-import { Calendar, Home, Inbox, Plus, Search, Settings } from 'lucide-react';
+import {
+  Calendar,
+  Home,
+  Inbox,
+  LogOut,
+  Plus,
+  Search,
+  Settings,
+} from 'lucide-react';
 
 import {
   Sidebar,
@@ -11,6 +19,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter,
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useState } from 'react';
@@ -37,7 +46,7 @@ export function AppSidebar() {
             <p className="text-sm">Login to see your chat history</p>
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className=" flex-1">
               {history.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
@@ -50,6 +59,10 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarFooter className="absolute bottom-0 mx-auto w-full flex flex-row items-center justify-center gap-1">
+          logout
+          <LogOut />
+        </SidebarFooter>
       </SidebarContent>
     </Sidebar>
   );
