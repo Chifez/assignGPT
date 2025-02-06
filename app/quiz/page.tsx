@@ -46,7 +46,9 @@ export default function QuizPage() {
     });
     setScore(currentScore);
   };
-
+  const close = () => {
+    // searchParams.delete('token');
+  };
   useEffect(() => {
     const fetchQuiz = async () => {
       if (token) {
@@ -75,7 +77,7 @@ export default function QuizPage() {
   }, [token]);
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
+    <main className="flex flex-col items-center justify-center p-6 text-center">
       {quiz ? (
         <>
           <div>

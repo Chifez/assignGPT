@@ -60,7 +60,7 @@ export default function Chat() {
       <div className="relative w-full">
         <div
           className={cn(
-            'overflow-x-hidden overflow-y-auto flex-1 border border-red-500 group px-2 py-2 transition-all duration-200',
+            'overflow-auto flex-1 border border-red-500 group px-2 py-2 transition-all duration-200',
             previewOpen && !isMobile && 'w-[70%]'
           )}
         >

@@ -30,6 +30,7 @@ export function Quiz({
   token,
   onPreviewClick,
 }: QuizProps) {
+  const startQuiz = () => {};
   return (
     <>
       <Card className="relative w-full max-w-sm bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
