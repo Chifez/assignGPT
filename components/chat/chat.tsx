@@ -56,46 +56,41 @@ export default function Chat() {
   };
 
   return (
-    <div className="flex h-full w-full overflow-x-hidden">
-      <div className="relative w-full">
-        <div
-          className={cn(
-            'overflow-auto flex-1 border border-red-500 group px-2 py-2 transition-all duration-200',
-            previewOpen && !isMobile && 'w-[70%]'
-          )}
-        >
-          <div className="flex-1 max-w-xl mx-auto mt-10 mb-36">
-            {messages.map((message, index) => (
-              <MessageItem
-                key={message.id}
-                message={message}
-                isLastMessage={index === messages.length - 1}
-                isLoading={isLoading}
-                onPreviewClick={handlePreviewClick}
-              />
-            ))}
+    <div className="flex h-full w-full flex-col">
+      {/* Messages container */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-xl mx-auto px-4 py-6 space-y-6">
+          {messages.map((message, index) => (
+            <MessageItem
+              key={message.id}
+              message={message}
+              isLastMessage={index === messages.length - 1}
+              isLoading={isLoading}
+              onPreviewClick={handlePreviewClick}
+            />
+          ))}
 
-            {isLoading && !isLastMessageAssistant && (
-              <div className="whitespace-pre-wrap flex flex-col mb-5">
-                <div className="bg-transparent p-2 rounded-lg">
-                  <LoadingCursor />
-                </div>
+          {isLoading && !isLastMessageAssistant && (
+            <div className="whitespace-pre-wrap flex flex-col">
+              <div className="bg-transparent p-2 rounded-lg">
+                <LoadingCursor />
               </div>
-            )}
-          </div>
-
-          <div className="bg-white absolute mx-auto bottom-0 w-full h-fit pb-2">
-            <FilePreview files={files} onRemove={handleFileRemove} />
-            <div className="w-full max-w-xl mx-auto">
-              <ChatInput
-                input={input}
-                isLoading={isLoading}
-                onSubmit={handleFormSubmit}
-                onChange={handleInputChange}
-                onFileSelect={handleFileChange}
-              />
             </div>
-          </div>
+          )}
+        </div>
+      </div>
+
+      {/* Input container */}
+      <div className="flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4">
+        <div className="max-w-xl mx-auto">
+          <FilePreview files={files} onRemove={handleFileRemove} />
+          <ChatInput
+            input={input}
+            isLoading={isLoading}
+            onSubmit={handleFormSubmit}
+            onChange={handleInputChange}
+            onFileSelect={handleFileChange}
+          />
         </div>
       </div>
     </div>

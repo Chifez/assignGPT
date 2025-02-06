@@ -4,13 +4,14 @@ import { createClient } from '@/utils/supabase/server';
 
 interface Question {
   question: string;
+  type: string;
   options: string[];
   answer: string;
 }
 
 export const quizTool = createTool({
   description:
-    'Generate a quiz with a title, number of questions, and a dynamic short link. Return questions in JSON format with question, options array, and answer.',
+    'Generate a quiz with a title, number of questions, and a dynamic short link. Return questions in JSON format with question, type of question, options array, and answer.',
   parameters: z.object({
     title: z.string().describe('The title of the quiz'),
     numQuestions: z
@@ -21,6 +22,7 @@ export const quizTool = createTool({
       .array(
         z.object({
           question: z.string(),
+          type: z.string(),
           options: z.array(z.string()),
           answer: z.string(),
         })

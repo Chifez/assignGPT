@@ -1,64 +1,86 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { Label } from '../ui/label';
-import { Eye } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 interface QuizCardProps {
-  quiz: any;
-  index?: number;
-  handleSelectAnswer?: (index: number, answer: string) => void;
-  isPreview?: boolean;
-  className?: string;
+  quiz: {
+    question: string;
+    options: string[];
+    type: 'single' | 'multiple' | 'paragraph';
+  };
+  index: number;
+  handleSelectAnswer: (index: number, answer: string | string[]) => void;
+  userAnswer: string | string[] | undefined;
 }
 
-export function QuizCard({
+export const QuizCard = ({
   quiz,
   index,
   handleSelectAnswer,
-  isPreview,
-  className,
-}: QuizCardProps) {
-  return (
-    <Card className={cn('w-full', className)}>
-      <CardHeader>
-        <CardTitle className="text-xl font-bold">
-          {index !== undefined ? `Question ${index + 1}` : quiz.title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {quiz.question && <p className="text-gray-700">{quiz.question}</p>}
-          <RadioGroup
-            disabled={isPreview}
-            onValueChange={(value) =>
-              handleSelectAnswer && handleSelectAnswer(index!, value)
-            }
-          >
-            {quiz.options?.map((option: string, i: number) => (
-              <div key={i} className="flex items-center space-x-2">
-                <RadioGroupItem
-                  value={option}
-                  id={`option-${index}-${i}`}
-                  disabled={isPreview}
-                />
-                <Label
-                  htmlFor={`option-${index}-${i}`}
-                  className={cn(
-                    'text-sm font-normal',
-                    isPreview && 'text-gray-500'
-                  )}
-                >
-                  {option}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
-      </CardContent>
-    </Card>
+  userAnswer,
+}: QuizCardProps) => {
+  const [localAnswer, setLocalAnswer] = useState<string | string[]>(
+    userAnswer || (quiz.type === 'multiple' ? [] : '')
   );
-}
+
+  useEffect(() => {
+    setLocalAnswer(userAnswer || (quiz.type === 'multiple' ? [] : ''));
+  }, [userAnswer, quiz.type]);
+
+  const handleChange = (value: string | string[]) => {
+    setLocalAnswer(value);
+    handleSelectAnswer(index, value);
+  };
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold">{quiz.question}</h3>
+      {quiz.type === 'single' && (
+        <RadioGroup
+          value={localAnswer as string}
+          onValueChange={(value) => handleChange(value)}
+        >
+          {quiz.options.map((option, i) => (
+            <div key={i} className="flex items-center space-x-2">
+              <RadioGroupItem value={option} id={`option-${index}-${i}`} />
+              <Label htmlFor={`option-${index}-${i}`}>{option}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      )}
+      {quiz.type === 'multiple' && (
+        <div className="space-y-2">
+          {quiz.options.map((option, i) => (
+            <div key={i} className="flex items-center space-x-2">
+              <Checkbox
+                id={`option-${index}-${i}`}
+                checked={(localAnswer as string[]).includes(option)}
+                onCheckedChange={(checked) => {
+                  const newAnswer = checked
+                    ? [...(localAnswer as string[]), option]
+                    : (localAnswer as string[]).filter(
+                        (item) => item !== option
+                      );
+                  handleChange(newAnswer);
+                }}
+              />
+              <Label htmlFor={`option-${index}-${i}`}>{option}</Label>
+            </div>
+          ))}
+        </div>
+      )}
+      {quiz.type === 'paragraph' && (
+        <Textarea
+          value={localAnswer as string}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder="Type your answer here..."
+          className="w-full"
+        />
+      )}
+    </div>
+  );
+};

@@ -3,7 +3,7 @@
 import Chat from '../components/chat/chat';
 export default function Home() {
   return (
-    <div className=" flex flex-row h-[calc(100vh_-_theme(spacing.16))] overflow-hidden">
+    <div className="flex flex-row h-[calc(100vh_-_theme(spacing.16))]">
       <Chat />
       {/* <div
             className={`border-l transition-transform duration-200 ${
