@@ -9,13 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LoginPage from './auth/page';
+import LoginPage from '../app/auth/login/page';
 import { useUserStore } from '@/utils/store/userStore';
 import { useState } from 'react';
 
 export const Navigators = () => {
-  const { state, open, openMobile, isMobile, toggleSidebar } = useSidebar();
-  const { user, setUser } = useUserStore();
+  const { open, isMobile, toggleSidebar } = useSidebar();
+  const { user } = useUserStore();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const setNavWidth = () => {
@@ -55,7 +55,9 @@ export const Navigators = () => {
             </DialogContent>
           </Dialog>
         ) : (
-          <p>{user?.email}</p>
+          <p className="text-sm mt-2 font-medium">
+            {user?.email} {user.id}
+          </p>
         )}
       </section>
     </div>

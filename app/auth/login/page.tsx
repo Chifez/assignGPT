@@ -1,23 +1,8 @@
-// import { signup, login } from './actions';
-
-// export default function LoginPage() {
-//   return (
-//     <form className="flex flex-col items-start">
-//       <label htmlFor="email">Email:</label>
-//       <input id="email" name="email" type="email" required />
-//       <label htmlFor="password">Password:</label>
-//       <input id="password" name="password" type="password" required />
-//       <button formAction={login}>Log in</button>
-//       <button formAction={signup}>Sign up</button>
-//     </form>
-//   );
-// }
-
 'use client';
 
 import { useState } from 'react';
 import { signup, login } from './actions';
-import { Button } from '../ui/button';
+import { Button } from '../../../components/ui/button';
 import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';

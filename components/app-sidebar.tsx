@@ -27,8 +27,9 @@ interface History {
 }
 
 export function AppSidebar() {
-  const { user, setUser } = useUserStore();
   const [history, setHistory] = useState<History[]>([]);
+
+  const { user, setUser } = useUserStore();
 
   const handleSignOut = async () => {
     const supabase = createClient();

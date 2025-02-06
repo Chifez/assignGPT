@@ -7,9 +7,17 @@ import { Input } from './ui/input';
 import { Card } from './ui/card';
 import { ArrowUp, Paperclip, FileText, X } from 'lucide-react';
 import { Button } from './ui/button';
+import { toast } from 'sonner';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    onError: (error) => {
+      console.error('Chat error:', error);
+      toast.error(
+        'Failed to generate quiz. Please make sure you are logged in.'
+      );
+    },
+  });
   const [files, setFiles] = useState<File[]>([]);
 
   // Handle file selection

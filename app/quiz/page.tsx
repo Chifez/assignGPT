@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { createClient } from '@/utils/supabase/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -20,6 +21,7 @@ interface QuizData {
 export default function QuizPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const supabase = createClient();
 
   const [quiz, setQuiz] = useState<QuizData | undefined>(undefined);
   const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
@@ -44,21 +46,32 @@ export default function QuizPage() {
     setScore(currentScore);
   };
 
-  // useEffect(() => {
-  //   if (token) {
-  //     // Try to get quiz from Zustand first
-  //     let fetchedQuiz = getQuizById(token);
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      if (token) {
+        // Try to get quiz from Zustand first
+        // If not in Zustand, try to get from Supabase
+        const { data, error } = await supabase
+          .from('quizzes')
+          .select('*')
+          .eq('id', token)
+          .single();
 
-  //     // If not in Zustand, try to get from server
-  //     if (!fetchedQuiz) {
-  //       fetchedQuiz = getServerQuiz(token);
-  //     }
+        if (data && !error) {
+          let fetchedQuiz = {
+            title: data.title,
+            numQuestions: data.num_questions,
+            questions: data.questions,
+          };
+          if (fetchedQuiz) {
+            setQuiz(fetchedQuiz);
+          }
+        }
+      }
+    };
 
-  //     if (fetchedQuiz) {
-  //       setQuiz(fetchedQuiz);
-  //     }
-  //   }
-  // }, [token, getQuizById]);
+    fetchQuiz();
+  }, [token]);
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-6 text-center">
