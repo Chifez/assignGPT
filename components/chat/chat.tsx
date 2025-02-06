@@ -81,7 +81,7 @@ export default function Chat() {
       </div>
 
       {/* Input container */}
-      <div className="flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4">
+      <div className="flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4 py-2">
         <div className="max-w-xl mx-auto">
           <FilePreview files={files} onRemove={handleFileRemove} />
           <ChatInput
