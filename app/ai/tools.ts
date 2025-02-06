@@ -51,13 +51,6 @@ export const quizTool = createTool({
 
       console.log('Creating quiz for user:', user.id);
 
-      // Use AI-generated questions if provided, otherwise use defaults
-      // const quizQuestions = questions || Array.from({ length: numQuestions }, (_, i) => ({
-      //   question: `Question ${i + 1}`,
-      //   options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      //   answer: 'Option A',
-      // }));
-
       const { data, error } = await supabase
         .from('quizzes')
         .insert([

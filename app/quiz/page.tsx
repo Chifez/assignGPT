@@ -74,6 +74,10 @@ export default function QuizPage() {
     }
   };
 
+  const goBack = () => {
+    router.back();
+  };
+
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
