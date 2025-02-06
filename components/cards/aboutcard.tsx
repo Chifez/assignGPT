@@ -5,14 +5,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import Link from 'next/link';
 
-export default function GenUICard() {
+export default function AboutCard() {
   return (
-    <div className="max-w-xl mx-auto mt-10">
+    <div className="max-w-sm mx-auto mt-10">
       <Card>
         <CardHeader>
-          <CardTitle>Next AI SDK Lite</CardTitle>
+          <CardTitle>Generate quiz on the fly</CardTitle>
           <CardDescription>Start streaming UI Components!</CardDescription>
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground/90 leading-normal prose">
@@ -20,19 +19,11 @@ export default function GenUICard() {
             A simple prompt based way to enter into streaming components./
           </p>
           <p className="mb-3">
-            Try asking for the weather in any American city and see what
-            returns.{' '}
+            Start by asking for a quiz in any topic with any number of
+            questions.
           </p>
           <p className="mb-3">
             Notice when the component returns you can interact with it!{' '}
-          </p>
-          <p>
-            <Link
-              href="https://github.com/mattjared/nextjs-ai-lite"
-              className="underline"
-            >
-              Fork the repo and get hacking
-            </Link>{' '}
           </p>
         </CardContent>
       </Card>

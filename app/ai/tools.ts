@@ -2,17 +2,32 @@ import { tool as createTool } from 'ai';
 import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server';
 
+interface Question {
+  question: string;
+  options: string[];
+  answer: string;
+}
+
 export const quizTool = createTool({
   description:
-    'Generate a quiz with a title, number of questions, and a dynamic short link.',
+    'Generate a quiz with a title, number of questions, and a dynamic short link. Return questions in JSON format with question, options array, and answer.',
   parameters: z.object({
     title: z.string().describe('The title of the quiz'),
     numQuestions: z
       .number()
       .min(1)
       .describe('The number of questions in the quiz'),
+    questions: z
+      .array(
+        z.object({
+          question: z.string(),
+          options: z.array(z.string()),
+          answer: z.string(),
+        })
+      )
+      .describe('Array of questions with their options and answers'),
   }),
-  execute: async function ({ title, numQuestions }) {
+  execute: async function ({ title, numQuestions, questions }) {
     try {
       const supabase = await createClient();
 
@@ -34,11 +49,12 @@ export const quizTool = createTool({
 
       console.log('Creating quiz for user:', user.id);
 
-      const questions = Array.from({ length: numQuestions }, (_, i) => ({
-        question: `Question ${i + 1}`,
-        options: ['Option A', 'Option B', 'Option C', 'Option D'],
-        answer: 'Option A',
-      }));
+      // Use AI-generated questions if provided, otherwise use defaults
+      // const quizQuestions = questions || Array.from({ length: numQuestions }, (_, i) => ({
+      //   question: `Question ${i + 1}`,
+      //   options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      //   answer: 'Option A',
+      // }));
 
       const { data, error } = await supabase
         .from('quizzes')
@@ -46,7 +62,7 @@ export const quizTool = createTool({
           {
             title,
             num_questions: numQuestions,
-            questions,
+            questions: questions,
             user_id: user.id,
           },
         ])

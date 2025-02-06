@@ -1,5 +1,6 @@
 'use client';
 
+import { QuizCard } from '@/components/cards/quizcard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { createClient } from '@/utils/supabase/client';
@@ -90,24 +91,14 @@ export default function QuizPage() {
               </span>
             )}
           </div>
-          <div className="mt-4 space-y-4">
+          <div className="flex flex-col items-center mt-4 space-y-4 w-full">
             {quiz.questions.map((q, index) => (
-              <Card key={index} className="p-4 bg-slate-50 text-start">
-                <h2 className="text-xl font-semibold">{q.question}</h2>
-                <form className="text-start mt-2">
-                  {q.options.map((option, i) => (
-                    <label key={i} htmlFor={q.question} className="flex">
-                      <input
-                        name={q.question}
-                        type="radio"
-                        className="text-gray-700"
-                        onClick={() => handleSelectAnswer(index, option)}
-                      />
-                      {option}
-                    </label>
-                  ))}
-                </form>
-              </Card>
+              <QuizCard
+                quiz={q}
+                key={index}
+                index={index}
+                handleSelectAnswer={handleSelectAnswer}
+              />
             ))}
           </div>
           <Button

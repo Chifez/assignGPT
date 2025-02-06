@@ -55,9 +55,7 @@ export const Navigators = () => {
             </DialogContent>
           </Dialog>
         ) : (
-          <p className="text-sm mt-2 font-medium">
-            {user?.email} {user.id}
-          </p>
+          <p className="text-sm mt-2 font-medium">{user?.email}</p>
         )}
       </section>
     </div>
