@@ -50,13 +50,13 @@ export function QuizPreview({ quizId, isOpen, onClose }: QuizPreviewProps) {
                 <div className="h-20 bg-gray-200 rounded animate-pulse" />
               </div>
             ) : (
-              quiz && (
-                <QuizCard
-                  quiz={quiz}
-                  isPreview
-                  className="border-none shadow-none"
-                />
-              )
+              //   quiz && (
+              //     <QuizCard
+              //       quiz={quiz}
+
+              //     />
+              //   )
+              <p>coming soon</p>
             )}
           </ScrollArea>
         </DialogContent>
@@ -82,13 +82,14 @@ export function QuizPreview({ quizId, isOpen, onClose }: QuizPreviewProps) {
             <div className="h-20 bg-gray-200 rounded animate-pulse" />
           </div>
         ) : (
-          quiz && (
-            <QuizCard
-              quiz={quiz}
-              isPreview
-              className="border-none shadow-none"
-            />
-          )
+          //   quiz && (
+          //     <QuizCard
+          //       quiz={quiz}
+          //       isPreview
+          //       className="border-none shadow-none"
+          //     />
+          //   )
+          <p>coming soon</p>
         )}
       </ScrollArea>
     </div>
