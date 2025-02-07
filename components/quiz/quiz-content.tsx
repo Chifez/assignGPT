@@ -27,28 +27,6 @@ export function QuizContent() {
   }>({});
   const [score, setScore] = useState<null | number>(null);
 
-  useEffect(() => {
-    const fetchQuiz = async () => {
-      if (token) {
-        const { data, error } = await supabase
-          .from('quizzes')
-          .select('*')
-          .eq('id', token)
-          .single();
-
-        if (data && !error) {
-          setQuiz({
-            title: data.title,
-            numQuestions: data.num_questions,
-            questions: data.questions,
-          });
-        }
-      }
-    };
-
-    fetchQuiz();
-  }, [token, supabase]);
-
   const handleSelectAnswer = (
     questionIndex: number,
     selectedOption: string | string[]
@@ -92,8 +70,32 @@ export function QuizContent() {
     setScore(currentScore);
   };
 
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      if (token) {
+        const { data, error } = await supabase
+          .from('quizzes')
+          .select('*')
+          .eq('id', token)
+          .single();
+
+        if (data && !error) {
+          setQuiz({
+            title: data.title,
+            numQuestions: data.num_questions,
+            questions: data.questions,
+          });
+        }
+      }
+    };
+
+    fetchQuiz();
+  }, [token, supabase]);
+
   if (!quiz) {
-    return <p className="text-red-500">Invalid or missing quiz data.</p>;
+    return (
+      <p className="text-red-500 text-center">Invalid or missing quiz data.</p>
+    );
   }
 
   const currentQuestion = quiz.questions[currentQuestionIndex];

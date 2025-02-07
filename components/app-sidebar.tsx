@@ -19,6 +19,7 @@ import { useUserStore } from '@/utils/store/userStore';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { History } from '@/utils/types';
+import { Button } from './ui/button';
 
 export function AppSidebar() {
   const [history, setHistory] = useState<History[]>([]);
@@ -39,7 +40,9 @@ export function AppSidebar() {
           <SidebarGroupLabel className="flex flex-col items-start mt-2 mb-8 space-y-2">
             <div className="w-full flex items-center justify-between font-semibold text-xl">
               <p className="text-black">AssignGPT</p>
-              <Plus size={20} />
+              <Button variant="ghost">
+                <Plus size={20} />
+              </Button>
             </div>
             <p className="text-sm">Login to see your chat history</p>
           </SidebarGroupLabel>
@@ -60,10 +63,15 @@ export function AppSidebar() {
         {user && (
           <SidebarFooter
             onClick={handleSignOut}
-            className="absolute bottom-0 mx-auto w-full flex flex-row items-center justify-center gap-1"
+            className="absolute bottom-0 mx-auto w-full"
           >
-            logout
-            <LogOut />
+            <Button
+              variant="ghost"
+              className="cursor-pointer w-full flex flex-row items-center justify-center gap-1"
+            >
+              Logout
+              <LogOut strokeWidth={1.25} />
+            </Button>
           </SidebarFooter>
         )}
       </SidebarContent>
