@@ -18,13 +18,7 @@ import { useState } from 'react';
 import { useUserStore } from '@/utils/store/userStore';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
-
-// history interface
-
-interface History {
-  title: string;
-  onclick: () => void;
-}
+import { History } from '@/utils/types';
 
 export function AppSidebar() {
   const [history, setHistory] = useState<History[]>([]);

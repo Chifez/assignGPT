@@ -1,15 +1,8 @@
-import { Message } from 'ai';
 import { LoadingCursor } from './loading-cursor';
 import { ResponseActions } from './response-actions';
 import { Quiz } from '../quiz';
 import { QuizLoader } from './quiz-loader';
-
-interface MessageItemProps {
-  message: Message;
-  isLastMessage: boolean;
-  isLoading: boolean;
-  onPreviewClick: (quizId: string) => void;
-}
+import { MessageItemProps } from '@/utils/types';
 
 export function MessageItem({
   message,

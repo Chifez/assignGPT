@@ -2,14 +2,7 @@ import { ArrowUp, Paperclip, Square } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card } from '../ui/card';
-
-interface ChatInputProps {
-  input: string;
-  isLoading: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { ChatInputProps } from '@/utils/types';
 
 export function ChatInput({
   input,

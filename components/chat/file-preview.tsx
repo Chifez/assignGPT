@@ -1,9 +1,5 @@
+import { FilePreviewProps } from '@/utils/types';
 import { FileText, X } from 'lucide-react';
-
-interface FilePreviewProps {
-  files: File[];
-  onRemove: (index: number) => void;
-}
 
 export function FilePreview({ files, onRemove }: FilePreviewProps) {
   if (files.length === 0) return null;

@@ -3,11 +3,7 @@
 import { Copy, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
-
-interface ResponseActionsProps {
-  content: string;
-  messageId: string;
-}
+import { ResponseActionsProps } from '@/utils/types';
 
 export function ResponseActions({ content, messageId }: ResponseActionsProps) {
   const handleCopy = async () => {

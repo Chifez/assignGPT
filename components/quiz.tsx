@@ -11,16 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, ClipboardList, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from './ui/badge';
-import { QuizCard } from './cards/quizcard';
-
-type QuizProps = {
-  title: string;
-  numQuestions: number;
-  link: string;
-  description?: string;
-  token: string;
-  onPreviewClick?: (quizId: string) => void;
-};
+import { QuizProps } from '@/utils/types';
 
 export function Quiz({
   title,
@@ -30,7 +21,6 @@ export function Quiz({
   token,
   onPreviewClick,
 }: QuizProps) {
-  const startQuiz = () => {};
   return (
     <>
       <Card className="relative w-full max-w-sm bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 mb-1">
@@ -66,12 +56,6 @@ export function Quiz({
           </Button>
         </CardFooter>
       </Card>
-      {/* <QuizCard
-        quiz={{
-          title,
-          link,
-        }}
-      /> */}
     </>
   );
 }

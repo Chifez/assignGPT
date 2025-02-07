@@ -6,10 +6,7 @@ import { Button } from '../../../components/ui/button';
 import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-
-interface LoginPageProps {
-  onSuccess?: () => void;
-}
+import { LoginPageProps } from '@/utils/types';
 
 export default function LoginPage({ onSuccess }: LoginPageProps) {
   const [isLogin, setIsLogin] = useState(true);

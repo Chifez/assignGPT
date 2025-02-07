@@ -12,19 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
-interface Question {
-  question: string;
-  options: string[];
-  answer: string;
-  type: 'single' | 'multiple' | 'paragraph';
-}
-
-interface QuizData {
-  title: string;
-  numQuestions: number;
-  questions: Question[];
-}
+import { QuizData } from '@/utils/types';
 
 export default function QuizPage() {
   const searchParams = useSearchParams();

@@ -5,17 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-
-interface QuizCardProps {
-  quiz: {
-    question: string;
-    options: string[];
-    type: 'single' | 'multiple' | 'paragraph';
-  };
-  index: number;
-  handleSelectAnswer: (index: number, answer: string | string[]) => void;
-  userAnswer: string | string[] | undefined;
-}
+import { QuizCardProps } from '@/utils/types';
 
 export const QuizCard = ({
   quiz,
