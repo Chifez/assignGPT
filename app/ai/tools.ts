@@ -11,7 +11,7 @@ interface Question {
 
 export const quizTool = createTool({
   description:
-    'Generate a quiz with a title, number of questions, and a dynamic short link. Return questions in JSON format with question, type of question (must only be returned as multiple or paragraph or single, no other word should be used), options array, and answer.',
+    'Generate a quiz with a title, number of questions. Return questions in JSON format with question, type of question (must only be returned as multiple or paragraph or single, no other word should be used), options array, and answer.',
   parameters: z.object({
     title: z.string().describe('The title of the quiz'),
     numQuestions: z

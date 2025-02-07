@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { QuizData } from '@/utils/types';
+import { ArrowLeft } from 'lucide-react';
 
 export function QuizContent() {
   const searchParams = useSearchParams();
@@ -101,43 +102,58 @@ export function QuizContent() {
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   return (
-    <Card className="w-full max-w-4xl mx-auto mt-8">
-      <CardHeader>
-        <CardTitle>{quiz.title}</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Question {currentQuestionIndex + 1} of {quiz.numQuestions}
-        </p>
-      </CardHeader>
-      <CardContent>
-        <QuizCard
-          quiz={currentQuestion}
-          index={currentQuestionIndex}
-          handleSelectAnswer={handleSelectAnswer}
-          userAnswer={userAnswers[currentQuestionIndex]}
-        />
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button onClick={handlePrevious} disabled={currentQuestionIndex === 0}>
-          Previous
-        </Button>
-        {currentQuestionIndex === quiz.questions.length - 1 ? (
-          <Button
-            onClick={handleSubmit}
-            disabled={Object.keys(userAnswers).length !== quiz.questions.length}
-          >
-            Submit
-          </Button>
-        ) : (
-          <Button onClick={handleNext}>Next</Button>
-        )}
-      </CardFooter>
-      {score !== null && (
-        <div className="text-center p-4 bg-green-100 rounded-b-lg">
-          <p className="text-2xl font-bold">
-            Your Score: {score} / {quiz.numQuestions}
+    <div className="relative py-4  mt-4">
+      <Button
+        variant="ghost"
+        onClick={goBack}
+        className="flex items-center gap-2 absolute top-0 left-2"
+      >
+        <ArrowLeft />
+        Go back
+      </Button>
+      <Card className="w-full max-w-4xl mx-auto mt-8">
+        <CardHeader>
+          <CardTitle>{quiz.title}</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Question {currentQuestionIndex + 1} of {quiz.numQuestions}
           </p>
-        </div>
-      )}
-    </Card>
+        </CardHeader>
+        <CardContent>
+          <QuizCard
+            quiz={currentQuestion}
+            index={currentQuestionIndex}
+            handleSelectAnswer={handleSelectAnswer}
+            userAnswer={userAnswers[currentQuestionIndex]}
+          />
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button
+            onClick={handlePrevious}
+            disabled={currentQuestionIndex === 0}
+          >
+            Previous
+          </Button>
+          {currentQuestionIndex === quiz.questions.length - 1 ? (
+            <Button
+              onClick={handleSubmit}
+              disabled={
+                Object.keys(userAnswers).length !== quiz.questions.length
+              }
+            >
+              Submit
+            </Button>
+          ) : (
+            <Button onClick={handleNext}>Next</Button>
+          )}
+        </CardFooter>
+        {score !== null && (
+          <div className="text-center p-4 bg-green-100 rounded-b-lg">
+            <p className="text-2xl font-bold">
+              Your Score: {score} / {quiz.numQuestions}
+            </p>
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
