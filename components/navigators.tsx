@@ -6,17 +6,19 @@ import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LoginPage from '../app/auth/login/page';
+import { LoginForm } from './auth/login-form';
 import { useUserStore } from '@/utils/store/userStore';
 import { useState } from 'react';
 
 export const Navigators = () => {
   const { open, isMobile, toggleSidebar } = useSidebar();
-  const { user } = useUserStore();
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const user = useUserStore((state) => state.user);
+  const [isOpen, setIsOpen] = useState(false);
 
   const setNavWidth = () => {
     if (!isMobile) {
@@ -45,13 +47,20 @@ export const Navigators = () => {
           )}
         </div>
         {user == null ? (
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button>Login</Button>
+              <Button variant="outline" size="sm">
+                Login
+              </Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogTitle className="sr-only">login</DialogTitle>
-              <LoginPage onSuccess={() => setDialogOpen(false)} />
+              <DialogHeader>
+                <DialogTitle>Authentication</DialogTitle>
+                <DialogDescription>
+                  Login or create an account to continue
+                </DialogDescription>
+              </DialogHeader>
+              <LoginForm onSuccess={() => setIsOpen(false)} />
             </DialogContent>
           </Dialog>
         ) : (

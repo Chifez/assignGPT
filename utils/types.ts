@@ -1,9 +1,5 @@
 import { Message } from 'ai';
 
-export interface LoginPageProps {
-  onSuccess?: () => void;
-}
-
 export interface Question {
   question: string;
   options: string[];
@@ -65,4 +61,8 @@ export interface QuizProps {
   description?: string;
   token: string;
   onPreviewClick?: (quizId: string) => void;
+}
+
+export interface LoginFormProps {
+  onSuccess?: () => void;
 }
