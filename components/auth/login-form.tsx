@@ -7,6 +7,7 @@ import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { LoginFormProps } from '@/utils/types';
+import { SubmitButton } from './submit-button';
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,9 +40,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         </h2>
       </div>
       <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const formData = new FormData(e.currentTarget);
+        action={async (formData) => {
           await handleAction(formData);
         }}
         className="mt-8 space-y-6"
@@ -78,12 +77,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         )}
 
         <div>
-          <Button
-            type="submit"
-            className="group relative w-full flex justify-center py-2 px-4 border border-black text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-          >
-            {isLogin ? 'Sign in' : 'Sign up'}
-          </Button>
+          <SubmitButton isLogin={isLogin} />
         </div>
       </form>
 
