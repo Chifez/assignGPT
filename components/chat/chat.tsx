@@ -68,7 +68,7 @@ export default function Chat() {
         }
       } else {
         setMessages([]); // Clear messages for new chat
-        setInitialMessages([]);
+        // setInitialMessages([]);
       }
     }
 

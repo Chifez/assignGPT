@@ -20,7 +20,12 @@ export async function signup(formData: FormData) {
   }
 
   // Show success toast and return user data
-  return { success: true, message: 'Signup successful!', user: data.user };
+  return {
+    success: true,
+    message: 'Signup successful!',
+    user: data.user,
+    verify: true,
+  };
 }
 
 export async function login(formData: FormData) {
@@ -40,5 +45,10 @@ export async function login(formData: FormData) {
   }
 
   // Show success toast and return user data
-  return { success: true, message: 'Login successful!', user: data.user };
+  return {
+    success: true,
+    message: 'Login successful!',
+    user: data.user,
+    verify: false,
+  };
 }
