@@ -34,17 +34,18 @@ export const Navigators = () => {
       <section className="w-full flex justify-between p-2">
         <div className="flex items-center space-x-2 mx-2">
           <SidebarTrigger className="mt-2 border rounded-md p-2" />
-          {!open && (
-            <Button
-              data-sidebar="trigger"
-              variant="ghost"
-              size="icon"
-              onClick={() => setCurrentChatId(null)}
-              className="mt-2 size-7 border rounded-md p-2"
-            >
-              <Plus />
-            </Button>
-          )}
+          {!open ||
+            (isMobile && (
+              <Button
+                data-sidebar="trigger"
+                variant="ghost"
+                size="icon"
+                onClick={() => setCurrentChatId(null)}
+                className="mt-2 size-7 border rounded-md p-2"
+              >
+                <Plus />
+              </Button>
+            ))}
         </div>
         {user == null ? (
           <Dialog open={isAuthOpen} onOpenChange={setAuthIsOpen}>
