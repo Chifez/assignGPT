@@ -8,7 +8,7 @@ import {
 
 export default function AboutCard() {
   return (
-    <div className="max-w-sm mx-auto mt-10">
+    <div className="max-w-xl mx-auto mt-10 mb-4">
       <Card>
         <CardHeader>
           <CardTitle>Generate quiz on the fly</CardTitle>

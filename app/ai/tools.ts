@@ -2,13 +2,6 @@ import { tool as createTool } from 'ai';
 import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server';
 
-interface Question {
-  question: string;
-  type: string;
-  options: string[];
-  answer: string;
-}
-
 export const quizTool = createTool({
   description:
     'Generate a quiz with a title, number of questions. Return questions in JSON format with question, type of question (must only be returned as multiple or paragraph or single, no other word should be used), options array, and answer.',

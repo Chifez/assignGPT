@@ -1,42 +1,105 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useChat } from 'ai/react';
 import { toast } from 'sonner';
 import { MessageItem } from './message-item';
 import { FilePreview } from './file-preview';
 import { ChatInput } from './chat-input';
 import { LoadingCursor } from './loading-cursor';
-import { QuizPreview } from '../quiz/quiz-preview';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
+import { useChatStore } from '@/utils/store/chatStore';
+import { Message } from 'ai';
+import { nanoid } from 'nanoid';
+import AboutCard from '../cards/aboutcard';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
-    useChat({
-      api: '/api/chat',
-      onError: (error) => {
-        console.error('Chat error:', error);
-        toast.error(
-          'Failed to generate quiz. Please make sure you are logged in.'
-        );
-      },
-    });
+  const {
+    currentChatId,
+    setCurrentChatId,
+    createChat,
+    saveMessage,
+    fetchMessages,
+  } = useChatStore();
 
+  const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
+  // const [previewOpen, setPreviewOpen] = useState(false);
+  // const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
   const isMobile = useIsMobile();
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    stop,
+    setMessages,
+  } = useChat({
+    api: '/api/chat',
+    initialMessages,
+    onFinish: async (message) => {
+      if (currentChatId) {
+        // Create new chat with AI-generated title from first message
+        console.log('ui messages', messages, message);
+        // Save assistant's response
+        await saveMessage(currentChatId, message);
+      }
+    },
+    onError: (error) => {
+      console.error('Chat error:', error);
+      toast.error('Failed to send message. Please try again.');
+    },
+    sendExtraMessageFields: true,
+  });
+
+  // Load messages when chat changes
+  useEffect(() => {
+    async function loadMessages() {
+      if (currentChatId) {
+        try {
+          const messages = await fetchMessages(currentChatId);
+          if (messages.length > 0) {
+            setMessages(messages); // Only overwrite if there are messages
+          }
+        } catch (error) {
+          toast.error('Failed to load chat messages');
+        }
+      } else {
+        setMessages([]); // Clear messages for new chat
+        setInitialMessages([]);
+      }
+    }
+
+    loadMessages();
+  }, [currentChatId, fetchMessages, setMessages]);
 
   const lastMessage = messages[messages.length - 1];
   const isLastMessageAssistant = lastMessage?.role === 'assistant';
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (isLoading) {
       stop();
     } else {
       handleSubmit(e);
+      const userMessage: Message = {
+        id: nanoid(),
+        role: 'user',
+        content: input,
+      };
+
+      // Save user message immediately
+      if (currentChatId) {
+        await saveMessage(currentChatId, userMessage);
+      }
+      // If new chat, create it first
+      if (!currentChatId) {
+        const chatId = await createChat(input, userMessage);
+        setCurrentChatId(chatId);
+      }
     }
   };
 
@@ -51,8 +114,9 @@ export default function Chat() {
   };
 
   const handlePreviewClick = (quizId: string) => {
-    setSelectedQuizId(quizId);
-    setPreviewOpen(true);
+    // TODO implement preview quiz
+    // setSelectedQuizId(quizId);
+    // setPreviewOpen(true);
   };
 
   return (
@@ -82,6 +146,7 @@ export default function Chat() {
 
       {/* Input container */}
       <div className="flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4 py-2">
+        {!currentChatId && <AboutCard />}
         <div className="max-w-xl mx-auto">
           <FilePreview files={files} onRemove={handleFileRemove} />
           <ChatInput

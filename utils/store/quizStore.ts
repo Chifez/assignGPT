@@ -1,26 +1,5 @@
 import { create } from 'zustand';
-
-interface Quiz {
-  id: string;
-  title: string;
-  numQuestions: number;
-  questions: {
-    question: string;
-    options: string[];
-    answer: string;
-  }[];
-}
-
-interface QuizStore {
-  quizzes: Record<string, Quiz>;
-  setQuiz: (
-    id: string,
-    title: string,
-    numQuestions: number,
-    questions: Quiz['questions']
-  ) => void;
-  getQuizById: (id: string) => Quiz | undefined;
-}
+import { QuizStore } from '../types';
 
 export const useQuizStore = create<QuizStore>((set, get) => ({
   quizzes: {},

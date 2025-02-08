@@ -66,3 +66,79 @@ export interface QuizProps {
 export interface LoginFormProps {
   onSuccess?: () => void;
 }
+
+// Store types
+export interface ToolResult {
+  link?: string;
+  title?: string;
+  numQuestions?: number;
+  [key: string]: any;
+}
+
+export interface ToolInvocation {
+  args: {
+    title?: string | any;
+    questions?: any[] | any;
+    numQuestions?: number | any;
+    [key: string]: any | any;
+  };
+  step: number | any;
+  state: string | any;
+  result: ToolResult;
+  toolName: string;
+  toolCallId: string;
+}
+
+export interface ChatMessage extends Message {
+  tool_name?: string;
+  tool_result?: any;
+  createdAt?: Date | undefined;
+  toolInvocations?: ToolInvocation[];
+}
+
+export interface Chat {
+  id: string;
+  title: string;
+  messages: ChatMessage[];
+}
+
+export interface ChatState {
+  currentChatId: string | null;
+  setCurrentChatId: (id: string | null) => void;
+  chats: Chat[];
+  setChats: (chats: Chat[]) => void;
+  fetchChats: () => Promise<void>;
+  createChat: (title: string, firstMessage: Message) => Promise<string>;
+  clearChats: () => void;
+  // clearMessages: () => void;
+  saveMessage: (
+    chatId: string,
+    message: Message | Message[],
+    toolName?: string,
+    toolResult?: any,
+    toolInvocations?: ToolInvocation[]
+  ) => Promise<void>;
+  fetchMessages: (chatId: string) => Promise<ChatMessage[]>;
+}
+
+export interface Quiz {
+  id: string;
+  title: string;
+  numQuestions: number;
+  questions: {
+    question: string;
+    options: string[];
+    answer: string;
+  }[];
+}
+
+export interface QuizStore {
+  quizzes: Record<string, Quiz>;
+  setQuiz: (
+    id: string,
+    title: string,
+    numQuestions: number,
+    questions: Quiz['questions']
+  ) => void;
+  getQuizById: (id: string) => Quiz | undefined;
+}

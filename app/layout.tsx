@@ -6,6 +6,7 @@ import { QuizPreviewProvider } from '@/hooks/use-quiz-preview';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Navigators } from '@/components/navigators';
 import { AppSidebar } from '@/components/app-sidebar';
+import { AuthProvider } from '@/components/providers/auth-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,16 +33,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SidebarProvider>
-          <QuizPreviewProvider>
-            <AppSidebar />
-            <main>
-              <Navigators />
-              {children}
-              <Toaster />
-            </main>
-          </QuizPreviewProvider>
-        </SidebarProvider>
+        <AuthProvider>
+          <SidebarProvider>
+            <QuizPreviewProvider>
+              <AppSidebar />
+              <main>
+                <Navigators />
+                {children}
+                <Toaster />
+              </main>
+            </QuizPreviewProvider>
+          </SidebarProvider>
+        </AuthProvider>
       </body>
     </html>
   );

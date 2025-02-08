@@ -7,6 +7,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
 import { X } from 'lucide-react';
+import { QuizData } from '@/utils/types';
 
 interface QuizPreviewProps {
   quizId: string;
@@ -15,9 +16,20 @@ interface QuizPreviewProps {
 }
 
 export function QuizPreview({ quizId, isOpen, onClose }: QuizPreviewProps) {
-  const [quiz, setQuiz] = useState<any>(null);
+  const [quiz, setQuiz] = useState<QuizData[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<{
+    [key: number]: string | string[];
+  }>({});
   const [loading, setLoading] = useState(true);
   const isMobile = useIsMobile();
+
+  const handleSelectAnswer = (
+    questionIndex: number,
+    selectedOption: string | string[]
+  ) => {
+    setUserAnswers((prev) => ({ ...prev, [questionIndex]: selectedOption }));
+  };
 
   useEffect(() => {
     if (isOpen && quizId) {
@@ -50,13 +62,17 @@ export function QuizPreview({ quizId, isOpen, onClose }: QuizPreviewProps) {
                 <div className="h-20 bg-gray-200 rounded animate-pulse" />
               </div>
             ) : (
-              //   quiz && (
-              //     <QuizCard
-              //       quiz={quiz}
+              quiz &&
+              quiz.map((quiz: any, index) => (
+                <QuizCard
+                  quiz={quiz}
+                  index={currentQuestionIndex}
+                  handleSelectAnswer={handleSelectAnswer}
+                  userAnswer={userAnswers[currentQuestionIndex]}
+                />
+              ))
 
-              //     />
-              //   )
-              <p>coming soon</p>
+              // <p>coming soon</p>
             )}
           </ScrollArea>
         </DialogContent>
@@ -82,14 +98,16 @@ export function QuizPreview({ quizId, isOpen, onClose }: QuizPreviewProps) {
             <div className="h-20 bg-gray-200 rounded animate-pulse" />
           </div>
         ) : (
-          //   quiz && (
-          //     <QuizCard
-          //       quiz={quiz}
-          //       isPreview
-          //       className="border-none shadow-none"
-          //     />
-          //   )
-          <p>coming soon</p>
+          quiz &&
+          quiz.map((quiz: any, index) => (
+            <QuizCard
+              quiz={quiz}
+              index={currentQuestionIndex}
+              handleSelectAnswer={handleSelectAnswer}
+              userAnswer={userAnswers[currentQuestionIndex]}
+            />
+          ))
+          // <p>coming soon</p>
         )}
       </ScrollArea>
     </div>

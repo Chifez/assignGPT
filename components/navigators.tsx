@@ -14,11 +14,13 @@ import {
 import { LoginForm } from './auth/login-form';
 import { useUserStore } from '@/utils/store/userStore';
 import { useState } from 'react';
+import { useChatStore } from '@/utils/store/chatStore';
 
 export const Navigators = () => {
-  const { open, isMobile, toggleSidebar } = useSidebar();
+  const { open, isMobile } = useSidebar();
+  const { setCurrentChatId } = useChatStore();
   const user = useUserStore((state) => state.user);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAuthOpen, setAuthIsOpen] = useState(false);
 
   const setNavWidth = () => {
     if (!isMobile) {
@@ -37,9 +39,7 @@ export const Navigators = () => {
               data-sidebar="trigger"
               variant="ghost"
               size="icon"
-              onClick={(event) => {
-                toggleSidebar();
-              }}
+              onClick={() => setCurrentChatId(null)}
               className="mt-2 size-7 border rounded-md p-2"
             >
               <Plus />
@@ -47,7 +47,7 @@ export const Navigators = () => {
           )}
         </div>
         {user == null ? (
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog open={isAuthOpen} onOpenChange={setAuthIsOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
                 Login
@@ -60,7 +60,7 @@ export const Navigators = () => {
                   Login or create an account to continue
                 </DialogDescription>
               </DialogHeader>
-              <LoginForm onSuccess={() => setIsOpen(false)} />
+              <LoginForm onSuccess={() => setAuthIsOpen(false)} />
             </DialogContent>
           </Dialog>
         ) : (
