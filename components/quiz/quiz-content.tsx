@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/card';
 import { QuizData } from '@/utils/types';
 import { ArrowLeft } from 'lucide-react';
+import { QuizLoader } from '../chat/quiz-loader';
 
 export function QuizContent() {
   const searchParams = useSearchParams();
@@ -95,7 +96,9 @@ export function QuizContent() {
 
   if (!quiz) {
     return (
-      <p className="text-red-500 text-center">Invalid or missing quiz data.</p>
+      <div className="w-full h-full flex items-center justify-center">
+        <QuizLoader className="max-w-2xl max-h-72" />
+      </div>
     );
   }
 

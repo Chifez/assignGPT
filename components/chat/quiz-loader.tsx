@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils';
 import { Card } from '../ui/card';
 import { Skeleton } from '../ui/skeleton';
 
-export const QuizLoader = () => {
+export const QuizLoader = ({ className }: { className?: string }) => {
   return (
-    <Card className="w-full max-w-sm p-2">
+    <Card className={cn('w-full max-w-sm p-2', className)}>
       <div className="flex flex-col space-y-3">
         <div className="space-y-2">
           <Skeleton className="h-5 w-full" />
