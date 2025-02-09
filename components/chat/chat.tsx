@@ -41,9 +41,7 @@ export default function Chat() {
     initialMessages,
     onFinish: async (message) => {
       if (currentChatId) {
-        // Create new chat with AI-generated title from first message
         console.log('ui messages', messages, message);
-        // Save assistant's response
         await saveMessage(currentChatId, message);
       }
     },
@@ -53,27 +51,6 @@ export default function Chat() {
     },
     sendExtraMessageFields: true,
   });
-
-  // Load messages when chat changes
-  useEffect(() => {
-    async function loadMessages() {
-      if (currentChatId) {
-        try {
-          const messages = await fetchMessages(currentChatId);
-          if (messages.length > 0) {
-            setMessages(messages); // Only overwrite if there are messages
-          }
-        } catch (error) {
-          toast.error('Failed to load chat messages');
-        }
-      } else {
-        setMessages([]); // Clear messages for new chat
-        // setInitialMessages([]);
-      }
-    }
-
-    loadMessages();
-  }, [currentChatId, fetchMessages, setMessages]);
 
   const lastMessage = messages[messages.length - 1];
   const isLastMessageAssistant = lastMessage?.role === 'assistant';
@@ -95,9 +72,9 @@ export default function Chat() {
       if (currentChatId) {
         await saveMessage(currentChatId, userMessage);
       }
-      // If new chat, create it first
+      // If new chat, create it first and generate a chatId
       if (!currentChatId) {
-        const chatId = await createChat(input, userMessage);
+        const chatId = await createChat(input, messages);
         setCurrentChatId(chatId);
       }
     }
@@ -118,6 +95,28 @@ export default function Chat() {
     // setSelectedQuizId(quizId);
     // setPreviewOpen(true);
   };
+
+  // Load messages when chat changes
+  useEffect(() => {
+    console.log('trigger', { currentChatId, isLoading });
+    async function loadMessages() {
+      if (currentChatId) {
+        try {
+          const fetchedMessages = await fetchMessages(currentChatId);
+          if (fetchedMessages.length > 0) {
+            setMessages(fetchedMessages); // Only overwrite if there are messages
+          }
+        } catch (error) {
+          toast.error('Failed to load chat messages');
+        }
+      } else {
+        setMessages([]); // Clear messages for new chat
+        // setInitialMessages([]);
+      }
+    }
+
+    loadMessages();
+  }, [currentChatId]);
 
   return (
     <div className="flex h-full w-full flex-col">

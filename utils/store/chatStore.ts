@@ -69,7 +69,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({ chats: data });
   },
 
-  createChat: async (title: string, firstMessage: Message) => {
+  createChat: async (title: string, firstMessage: Message[]) => {
     const supabase = createClient();
 
     const {
@@ -81,14 +81,14 @@ export const useChatStore = create<ChatState>((set, get) => ({
       throw new Error('Authentication error');
     }
 
-    const normalizedMessage = normalizeMessage(firstMessage);
+    const normalizedMessage = firstMessage;
 
     const { data: chat, error: chatError } = await supabase
       .from('chats')
       .insert({
         title,
         user_id: user.id,
-        messages: [normalizedMessage],
+        messages: normalizedMessage,
       })
       .select()
       .single();

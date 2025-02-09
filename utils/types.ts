@@ -108,7 +108,7 @@ export interface ChatState {
   chats: Chat[];
   setChats: (chats: Chat[]) => void;
   fetchChats: () => Promise<void>;
-  createChat: (title: string, firstMessage: Message) => Promise<string>;
+  createChat: (title: string, firstMessage: Message[]) => Promise<string>;
   clearChats: () => void;
   // clearMessages: () => void;
   saveMessage: (
