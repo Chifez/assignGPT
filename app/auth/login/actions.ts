@@ -24,7 +24,6 @@ export async function signup(formData: FormData) {
     success: true,
     message: 'Signup successful!',
     user: data.user,
-    verify: true,
   };
 }
 
@@ -49,6 +48,5 @@ export async function login(formData: FormData) {
     success: true,
     message: 'Login successful!',
     user: data.user,
-    verify: false,
   };
 }

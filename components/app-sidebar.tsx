@@ -26,6 +26,7 @@ export function AppSidebar() {
   const { chats, fetchChats, setCurrentChatId, clearChats, currentChatId } =
     useChatStore();
   const { user, setUser } = useUserStore();
+  const { toggleSidebar, isMobile } = useSidebar();
 
   useEffect(() => {
     fetchChats();
@@ -34,6 +35,9 @@ export function AppSidebar() {
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
+    if (isMobile) {
+      toggleSidebar();
+    }
     setUser(null);
     clearChats();
     toast.success('Signed out successfully');
@@ -63,7 +67,12 @@ export function AppSidebar() {
                       : ''
                   }`}
                 >
-                  <SidebarMenuButton onClick={() => setCurrentChatId(chat.id)}>
+                  <SidebarMenuButton
+                    onClick={() => {
+                      setCurrentChatId(chat.id);
+                      isMobile && toggleSidebar();
+                    }}
+                  >
                     <span>{chat.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

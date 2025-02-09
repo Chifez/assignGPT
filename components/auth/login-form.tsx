@@ -8,18 +8,9 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { LoginFormProps } from '@/utils/types';
 import { SubmitButton } from './submit-button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../ui/dialog';
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLogin, setIsLogin] = useState(true);
-  const [showVerifyDialog, setShowVerifyDialog] = useState(false);
   const [error, setError] = useState('');
   const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
@@ -34,11 +25,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         toast.success(result.message);
         onSuccess?.();
         router.push('/');
-
-        if (result.verify) {
-          setShowVerifyDialog(true);
-        }
-        // setShowVerifyDialog(result.verify);
       }
     } catch (error) {
       console.error('Auth error:', error);
@@ -107,20 +93,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             : 'Already have an account? Sign in'}
         </Button>
       </div>
-      <Dialog open={showVerifyDialog} onOpenChange={setShowVerifyDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Email Verification Required</DialogTitle>
-            <DialogDescription className="text-sm">
-              A verification email has been sent to your email address. Please
-              check your inbox and verify your account.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setShowVerifyDialog(false)}>Okay</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
