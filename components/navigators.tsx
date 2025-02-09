@@ -30,7 +30,9 @@ export const Navigators = () => {
   };
 
   return (
-    <div className={` sticky top-0 flex flex-col z-40 flex-1 ${setNavWidth()}`}>
+    <div
+      className={` sticky top-0 bg-white flex flex-col z-40 flex-1 ${setNavWidth()}`}
+    >
       <section className="w-full flex justify-between p-2">
         <div className="flex items-center space-x-2 mx-2">
           <SidebarTrigger className="mt-2 border rounded-md p-2" />
