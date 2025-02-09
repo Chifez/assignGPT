@@ -28,10 +28,6 @@ export function AppSidebar() {
   const { user, setUser } = useUserStore();
   const { toggleSidebar, isMobile } = useSidebar();
 
-  useEffect(() => {
-    fetchChats();
-  }, [user]);
-
   const handleSignOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -43,6 +39,9 @@ export function AppSidebar() {
     toast.success('Signed out successfully');
   };
 
+  useEffect(() => {
+    fetchChats();
+  }, [user]);
   return (
     <Sidebar>
       <SidebarContent>
@@ -50,7 +49,13 @@ export function AppSidebar() {
           <SidebarGroupLabel className="flex flex-col items-start mt-2 mb-8 space-y-2">
             <div className="w-full flex items-center justify-between font-semibold text-xl">
               <p className="text-black">AssignGPT</p>
-              <Button variant="ghost" onClick={() => setCurrentChatId(null)}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setCurrentChatId(null);
+                  isMobile && toggleSidebar();
+                }}
+              >
                 <Plus size={20} />
               </Button>
             </div>
