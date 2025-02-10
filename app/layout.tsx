@@ -34,16 +34,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <SidebarProvider>
-            <QuizPreviewProvider>
-              <AppSidebar />
-              <main>
-                <Navigators />
-                {children}
-                <Toaster richColors />
-              </main>
-            </QuizPreviewProvider>
-          </SidebarProvider>
+          {/* <QuizPreviewProvider> */}
+          {children}
+          <Toaster richColors />
+
+          {/* </QuizPreviewProvider> */}
         </AuthProvider>
       </body>
     </html>

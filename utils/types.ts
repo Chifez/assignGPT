@@ -21,7 +21,7 @@ export interface QuizCardProps {
   };
   index: number;
   handleSelectAnswer: (index: number, answer: string | string[]) => void;
-  userAnswer: string | string[] | undefined;
+  userAnswer?: string | string[] | undefined;
 }
 
 export interface ChatInputProps {
@@ -57,6 +57,7 @@ export interface History {
 export interface QuizProps {
   title: string;
   numQuestions: number;
+  questions: Question[];
   link: string;
   description?: string;
   token: string;

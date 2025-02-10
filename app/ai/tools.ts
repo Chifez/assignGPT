@@ -71,7 +71,8 @@ export const quizTool = createTool({
 
       const quizId = data.id;
       const quizLink = `/quiz?token=${quizId}`;
-      return { title, numQuestions, link: quizLink };
+      console.log('questions backend', questions);
+      return { title, numQuestions, questions, link: quizLink };
     } catch (error) {
       console.error('Quiz generation error:', error);
       throw error;

@@ -18,6 +18,7 @@ import {
   CardContent,
   CardFooter,
 } from '../ui/card';
+// import { Google } from '../ui/google';
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLogin, setIsLogin] = useState(true);
@@ -80,7 +81,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </div>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col">
+        <Button variant="outline" className="w-full">
+          {/* <Google /> */}
+          <p>{isLogin ? 'Sign In' : 'Sign Up'} with Google</p>
+        </Button>
         <Button
           variant="link"
           className="w-full"

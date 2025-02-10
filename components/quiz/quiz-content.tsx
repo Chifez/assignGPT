@@ -45,10 +45,6 @@ export function QuizContent() {
     }
   };
 
-  const goBack = () => {
-    router.back();
-  };
-
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -77,12 +73,11 @@ export function QuizContent() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (token && user) {
+      if (token) {
         const { data, error } = await supabase
           .from('quizzes')
           .select('*')
           .eq('id', token)
-          .eq('user_id', user.id)
           .single();
 
         if (error) {
@@ -114,15 +109,7 @@ export function QuizContent() {
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   return (
-    <div className="relative py-4  mt-4">
-      <Button
-        variant="ghost"
-        onClick={goBack}
-        className="flex items-center gap-2 absolute top-0 left-2"
-      >
-        <ArrowLeft />
-        Go back
-      </Button>
+    <div className="relative py-4 mt-4">
       <Card className="w-full max-w-4xl mx-auto mt-8">
         <CardHeader>
           <CardTitle>{quiz.title}</CardTitle>
