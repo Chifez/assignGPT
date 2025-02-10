@@ -43,10 +43,19 @@ export default function Chat() {
     api: '/api/chat',
     initialMessages,
     onFinish: async (message) => {
-      if (currentChatId) {
-        console.log('ui messages', messages, message);
+      if (!currentChatId) {
+        const userMessage: Message = {
+          id: nanoid(),
+          role: 'user',
+          content: input,
+        };
+        const firstMessage: Message[] = [userMessage, message];
+        const chatId = await createChat(input, firstMessage);
+        setCurrentChatId(chatId);
+      } else {
         await saveMessage(currentChatId, message);
       }
+      console.log('ui messages', messages, message);
     },
     onError: (error) => {
       console.error('Chat error:', error);
@@ -79,10 +88,11 @@ export default function Chat() {
         await saveMessage(currentChatId, userMessage);
       }
       // If new chat, create it first and generate a chatId
-      if (!currentChatId) {
-        const chatId = await createChat(input, messages);
-        setCurrentChatId(chatId);
-      }
+      // if (!currentChatId) {
+      //   console.log('message here', messages, userMessage);
+      //   const chatId = await createChat(input, [userMessage]);
+      //   setCurrentChatId(chatId);
+      // }
     }
   };
 

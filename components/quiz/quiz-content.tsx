@@ -15,12 +15,15 @@ import {
 import { QuizData } from '@/utils/types';
 import { ArrowLeft } from 'lucide-react';
 import { QuizLoader } from '../chat/quiz-loader';
+import { useUserStore } from '@/utils/store/userStore';
+import { toast } from 'sonner';
 
 export function QuizContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token');
   const supabase = createClient();
+  const user = useUserStore((state) => state.user);
 
   const [quiz, setQuiz] = useState<QuizData | undefined>(undefined);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -74,25 +77,39 @@ export function QuizContent() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (token) {
+      if (token && user) {
         const { data, error } = await supabase
           .from('quizzes')
           .select('*')
           .eq('id', token)
           .single();
 
-        if (data && !error) {
-          setQuiz({
-            title: data.title,
-            numQuestions: data.num_questions,
-            questions: data.questions,
-          });
+        if (error) {
+          toast.error(`Oops an error occurred`);
+          router.push('/');
+          return;
         }
+        if (data && !error) {
+          if (data.user_id != user.id) {
+            toast.error(`Oops this quiz doesnt belong to you`);
+            router.push('/');
+            return;
+          } else {
+            setQuiz({
+              title: data.title,
+              numQuestions: data.num_questions,
+              questions: data.questions,
+            });
+          }
+        }
+        // if (error) {
+        //
+        // }
       }
     };
 
     fetchQuiz();
-  }, [token, supabase]);
+  }, [token]);
 
   if (!quiz) {
     return (
