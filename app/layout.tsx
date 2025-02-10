@@ -40,7 +40,7 @@ export default function RootLayout({
               <main>
                 <Navigators />
                 {children}
-                <Toaster />
+                <Toaster richColors />
               </main>
             </QuizPreviewProvider>
           </SidebarProvider>

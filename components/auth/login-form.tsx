@@ -8,6 +8,16 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { LoginFormProps } from '@/utils/types';
 import { SubmitButton } from './submit-button';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '../ui/card';
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLogin, setIsLogin] = useState(true);
@@ -33,66 +43,54 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   }
 
   return (
-    <div className="w-full space-y-8">
-      <div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <Card className="w-full max-w-md mx-auto shadow-none border-none">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold text-center">
           {isLogin ? 'Sign in to your account' : 'Create a new account'}
-        </h2>
-      </div>
-      <form
-        action={async (formData) => {
-          await handleAction(formData);
-        }}
-        className="mt-8 space-y-6"
-      >
-        <div className="rounded-md shadow-sm space-y-2">
-          <div>
-            <label htmlFor="email">Email address</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
-              placeholder="Email address"
-            />
+        </CardTitle>
+        <CardDescription className="text-center">
+          Enter your email below to {isLogin ? 'login to' : 'create'} your
+          account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form action={handleAction}>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" required />
+            </div>
+
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
+            <div>
+              <SubmitButton isLogin={isLogin} />
+            </div>
           </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-black focus:border-black focus:z-10 sm:text-sm"
-              placeholder="Password"
-            />
-          </div>
-        </div>
-
-        {error && (
-          <div className="text-red-500 text-sm text-center">{error}</div>
-        )}
-
-        <div>
-          <SubmitButton isLogin={isLogin} />
-        </div>
-      </form>
-
-      <div className="text-center">
+        </form>
+      </CardContent>
+      <CardFooter>
         <Button
+          variant="link"
+          className="w-full"
           onClick={() => setIsLogin(!isLogin)}
-          className="font-medium"
-          variant="ghost"
-          type="button"
         >
           {isLogin
             ? "Don't have an account? Sign up"
             : 'Already have an account? Sign in'}
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

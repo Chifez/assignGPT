@@ -58,8 +58,8 @@ export const Navigators = () => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Authentication</DialogTitle>
-                <DialogDescription>
+                <DialogTitle className="sr-only">Authentication</DialogTitle>
+                <DialogDescription className="sr-only">
                   Login or create an account to continue
                 </DialogDescription>
               </DialogHeader>

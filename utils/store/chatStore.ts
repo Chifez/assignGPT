@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { Message, ToolInvocation } from 'ai';
 import { createClient } from '../supabase/client';
 import { ChatMessage, ChatState } from '../types';
+import { toast } from 'sonner';
 
 // Helper function to normalize a message
 const normalizeMessage = (
@@ -94,6 +95,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       .single();
 
     if (chatError || !chat) {
+      toast.error('Oops an error occurred');
       throw chatError;
     }
 
@@ -118,6 +120,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       .single();
 
     if (fetchError) {
+      toast.error('Oops an error occurred');
       throw fetchError;
     }
 
@@ -138,6 +141,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }
     } catch (error) {
       console.error('Error normalizing messages:', error);
+      toast.error(`Oops an error occurred, ${error}`);
       throw error;
     }
 
@@ -154,6 +158,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     if (updateError) {
       console.error('Error updating messages:', updateError);
+      toast.error(`Oops an error occurred, ${updateError}`);
       throw updateError;
     }
 
@@ -180,6 +185,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       .single();
 
     if (error) {
+      toast.error(`Oops an error occurred, ${error}`);
       throw error;
     }
 

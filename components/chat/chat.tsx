@@ -12,6 +12,7 @@ import { useChatStore } from '@/utils/store/chatStore';
 import { Message } from 'ai';
 import { nanoid } from 'nanoid';
 import AboutCard from '../cards/aboutcard';
+import { useUserStore } from '@/utils/store/userStore';
 
 export default function Chat() {
   const {
@@ -21,6 +22,8 @@ export default function Chat() {
     saveMessage,
     fetchMessages,
   } = useChatStore();
+
+  const user = useUserStore((state) => state.user);
 
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -57,7 +60,10 @@ export default function Chat() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (!user) {
+      toast.error('please login to continue');
+      return;
+    }
     if (isLoading) {
       stop();
     } else {
