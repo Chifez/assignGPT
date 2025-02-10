@@ -82,6 +82,7 @@ export function QuizContent() {
           .from('quizzes')
           .select('*')
           .eq('id', token)
+          .eq('user_id', user.id)
           .single();
 
         if (error) {
@@ -90,21 +91,12 @@ export function QuizContent() {
           return;
         }
         if (data && !error) {
-          if (data.user_id != user.id) {
-            toast.error(`Oops this quiz doesnt belong to you`);
-            router.push('/');
-            return;
-          } else {
-            setQuiz({
-              title: data.title,
-              numQuestions: data.num_questions,
-              questions: data.questions,
-            });
-          }
+          setQuiz({
+            title: data.title,
+            numQuestions: data.num_questions,
+            questions: data.questions,
+          });
         }
-        // if (error) {
-        //
-        // }
       }
     };
 
