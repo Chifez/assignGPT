@@ -45,11 +45,14 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   const handleGoogleSignIn = async () => {
     try {
-      await loginWithGoogle();
-      // TODO:  toast shows before consent screen is cleared
-      toast.success(`${isLogin ? 'Login' : 'SignUp'} successful`);
-    } catch {
-      toast.error('Oops an error ocurred');
+      const promise: any = await loginWithGoogle();
+      toast.promise(promise, {
+        loading: `Loading`,
+        success: `${isLogin ? 'Login' : 'Signup'} successful`,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(`Oops an error ocurred ${error}`);
     }
   };
 
