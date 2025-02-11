@@ -50,3 +50,18 @@ export async function login(formData: FormData) {
     user: data.user,
   };
 }
+
+export async function loginWithGoogle() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `http://${process.env.NEXT_PUBLIC_URL}/auth/callback`,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url); // use the redirect API for your server framework
+  }
+}

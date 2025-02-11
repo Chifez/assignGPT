@@ -8,6 +8,7 @@ import {
 } from '../ui/carousel';
 import { QuizCard } from '../cards/quizcard';
 import { Card, CardHeader, CardContent } from '../ui/card';
+import { useSidebar } from '../ui/sidebar';
 
 export const QuizCarousel = ({
   questions,
@@ -16,8 +17,9 @@ export const QuizCarousel = ({
   questions: Question[];
   numQuestions: number;
 }) => {
+  const { isMobile } = useSidebar();
   return (
-    <Carousel className="w-full max-w-xs">
+    <Carousel className="w-full max-w-xs md:max-w-sm mx-auto">
       <CarouselContent>
         {questions?.map((quiz, index) => (
           <CarouselItem key={index}>
@@ -38,8 +40,12 @@ export const QuizCarousel = ({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      {!isMobile && (
+        <>
+          <CarouselPrevious />
+          <CarouselNext />
+        </>
+      )}
     </Carousel>
   );
 };

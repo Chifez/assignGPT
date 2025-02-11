@@ -29,7 +29,7 @@ export function Quiz({
   const [isLoading, setIsLoading] = useState(false);
   console.log('question frontend', title, numQuestions, questions);
   return (
-    <Card className="relative w-full max-w-sm bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 mb-1">
+    <Card className="relative w-full max-w-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 mb-1">
       <Button
         variant="ghost"
         size="icon"

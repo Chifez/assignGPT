@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signup, login } from '@/app/auth/login/actions';
+import { signup, login, loginWithGoogle } from '@/app/auth/login/actions';
 import { Button } from '../ui/button';
 import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
@@ -43,6 +43,16 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();
+      // TODO:  toast shows before consent screen is cleared
+      toast.success(`${isLogin ? 'Login' : 'SignUp'} successful`);
+    } catch {
+      toast.error('Oops an error ocurred');
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto shadow-none border-none">
       <CardHeader className="space-y-1">
@@ -82,7 +92,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         </form>
       </CardContent>
       <CardFooter className="flex flex-col">
-        <Button variant="outline" className="w-full">
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleSignIn}
+        >
           {/* <Google /> */}
           <p>{isLogin ? 'Sign In' : 'Sign Up'} with Google</p>
         </Button>
