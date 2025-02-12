@@ -50,8 +50,22 @@ export default function Chat() {
           content: input,
         };
         const firstMessage: Message[] = [userMessage, message];
-        const chatId = await createChat(input, firstMessage);
-        setCurrentChatId(chatId);
+        const titleResponse = await fetch('/api/title', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: firstMessage,
+          }),
+        });
+
+        const { title } = await titleResponse.json();
+
+        if (title) {
+          const chatId = await createChat(title.trim(), firstMessage);
+          setCurrentChatId(chatId);
+        }
       } else {
         await saveMessage(currentChatId, message);
       }
@@ -87,12 +101,6 @@ export default function Chat() {
       if (currentChatId) {
         await saveMessage(currentChatId, userMessage);
       }
-      // If new chat, create it first and generate a chatId
-      // if (!currentChatId) {
-      //   console.log('message here', messages, userMessage);
-      //   const chatId = await createChat(input, [userMessage]);
-      //   setCurrentChatId(chatId);
-      // }
     }
   };
 
@@ -161,7 +169,7 @@ export default function Chat() {
 
       {/* Input container */}
       <div className="sticky bottom-0 z-40 flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4 py-2">
-        {!currentChatId && <AboutCard />}
+        {messages.length <= 0 && <AboutCard />}
         <div className="max-w-xl mx-auto">
           <FilePreview files={files} onRemove={handleFileRemove} />
           <ChatInput
