@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { QuizCard } from '@/components/cards/quizcard';
 import { Button } from '@/components/ui/button';
@@ -13,9 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { QuizData } from '@/utils/types';
-import { ArrowLeft } from 'lucide-react';
 import { QuizLoader } from '../chat/quiz-loader';
-import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 
 export function QuizContent() {
@@ -23,7 +21,6 @@ export function QuizContent() {
   const router = useRouter();
 
   const supabase = createClient();
-  const user = useUserStore((state) => state.user);
 
   const [quiz, setQuiz] = useState<QuizData | undefined>(undefined);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -40,15 +37,20 @@ export function QuizContent() {
   };
 
   const handleNext = () => {
+    console.log('clicked');
     if (quiz && currentQuestionIndex < quiz.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => {
+        console.log('clicked here', prevIndex + 1);
+        return prevIndex + 1;
+      });
     }
   };
 
-  const handlePrevious = () => {};
-  if (currentQuestionIndex > 0) {
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
-  }
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+    }
+  };
 
   const handleSubmit = () => {
     if (!quiz) return;
