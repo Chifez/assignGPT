@@ -112,6 +112,8 @@ export interface ChatState {
   createChat: (title: string, firstMessage: Message[]) => Promise<string>;
   clearChats: () => void;
   // clearMessages: () => void;
+  deleteChat: (id: string) => Promise<null | undefined>;
+  updateChatTitle: (id: string, title: string) => Promise<void>;
   saveMessage: (
     chatId: string,
     message: Message | Message[],

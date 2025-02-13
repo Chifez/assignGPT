@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { QuizCard } from '@/components/cards/quizcard';
 import { Button } from '@/components/ui/button';
@@ -19,9 +19,9 @@ import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 
 export function QuizContent() {
-  const searchParams = useSearchParams();
+  const { token } = useParams();
   const router = useRouter();
-  const token = searchParams.get('token');
+
   const supabase = createClient();
   const user = useUserStore((state) => state.user);
 

@@ -16,7 +16,7 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.log('error', error);
-    return redirect('/error');
+    // return redirect('/auth/error');
   }
 
   // Show success toast and return user data
@@ -40,7 +40,7 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log('error', error);
-    return redirect('/error');
+    // redirect('/auth/error');
   }
 
   // Show success toast and return user data

@@ -18,7 +18,6 @@ import {
   CardContent,
   CardFooter,
 } from '../ui/card';
-// import { Google } from '../ui/google';
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,11 +44,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   const handleGoogleSignIn = async () => {
     try {
-      const promise: any = await loginWithGoogle();
-      toast.promise(promise, {
-        loading: `Loading`,
-        success: `${isLogin ? 'Login' : 'Signup'} successful`,
-      });
+      // const promise: any = await loginWithGoogle();
+      // toast.promise(promise, {
+      //   loading: `Loading`,
+      //   success: `${isLogin ? 'Login' : 'Signup'} successful`,
+      // });
+      await loginWithGoogle();
     } catch (error) {
       console.log(error);
       toast.error(`Oops an error ocurred ${error}`);
@@ -100,7 +100,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           className="w-full"
           onClick={handleGoogleSignIn}
         >
-          {/* <Google /> */}
           <p>{isLogin ? 'Sign In' : 'Sign Up'} with Google</p>
         </Button>
         <Button

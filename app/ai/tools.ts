@@ -70,7 +70,7 @@ export const quizTool = createTool({
       console.log('Quiz created successfully:', data.id);
 
       const quizId = data.id;
-      const quizLink = `/quiz?token=${quizId}`;
+      const quizLink = `/quiz/${quizId}`;
       console.log('questions backend', questions);
       return { title, numQuestions, questions, link: quizLink };
     } catch (error) {

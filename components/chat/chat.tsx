@@ -13,6 +13,7 @@ import { Message } from 'ai';
 import { nanoid } from 'nanoid';
 import AboutCard from '../cards/aboutcard';
 import { useUserStore } from '@/utils/store/userStore';
+import { createClient } from '@/utils/supabase/client';
 
 export default function Chat() {
   const {
@@ -21,6 +22,8 @@ export default function Chat() {
     createChat,
     saveMessage,
     fetchMessages,
+    fetchChats,
+    updateChatTitle,
   } = useChatStore();
 
   const user = useUserStore((state) => state.user);
@@ -42,6 +45,36 @@ export default function Chat() {
   } = useChat({
     api: '/api/chat',
     initialMessages,
+    // onFinish: async (message) => {
+    //   if (!currentChatId) {
+    //     const userMessage: Message = {
+    //       id: nanoid(),
+    //       role: 'user',
+    //       content: input,
+    //     };
+    //     const firstMessage: Message[] = [userMessage, message];
+    //     const titleResponse = await fetch('/api/title', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         messages: firstMessage,
+    //       }),
+    //     });
+
+    //     const { title } = await titleResponse.json();
+
+    //     if (title) {
+    //       const chatId = await createChat(title.trim(), firstMessage);
+    //       setCurrentChatId(chatId);
+    //     }
+    //   } else {
+    //     await saveMessage(currentChatId, message);
+    //   }
+    //   console.log('ui messages', messages, message);
+    // },
+
     onFinish: async (message) => {
       if (!currentChatId) {
         const userMessage: Message = {
@@ -50,26 +83,32 @@ export default function Chat() {
           content: input,
         };
         const firstMessage: Message[] = [userMessage, message];
+
+        // 1️⃣ Optimistically update UI
+        const tempChatId = nanoid();
+        setMessages([...messages, userMessage, message]);
+
+        // 2️⃣ Create chat first
+        const chatId = await createChat('New Chat', firstMessage);
+        setCurrentChatId(chatId);
+
+        // 🔄 Fetch chats immediately so the sidebar updates
+        fetchChats();
+
+        // 3️⃣ Generate title in the background
         const titleResponse = await fetch('/api/title', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages: firstMessage,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: firstMessage }),
         });
 
         const { title } = await titleResponse.json();
-
         if (title) {
-          const chatId = await createChat(title.trim(), firstMessage);
-          setCurrentChatId(chatId);
+          updateChatTitle(chatId, title.trim());
         }
       } else {
         await saveMessage(currentChatId, message);
       }
-      console.log('ui messages', messages, message);
     },
     onError: (error) => {
       console.error('Chat error:', error);
