@@ -16,6 +16,7 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.log('error', error);
+    throw new Error('Oops an error occured');
     // return redirect('/auth/error');
   }
 
@@ -40,6 +41,7 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log('error', error);
+    throw new Error('Oops an error occured');
     // redirect('/auth/error');
   }
 
@@ -60,6 +62,11 @@ export async function loginWithGoogle() {
       redirectTo: `http://${process.env.NEXT_PUBLIC_URL}/auth/callback`,
     },
   });
+
+  if (error) {
+    console.log('error', error);
+    throw new Error('Oops an error occured');
+  }
 
   if (data.url) {
     redirect(data.url); // use the redirect API for your server framework

@@ -96,8 +96,10 @@ export function AppSidebar() {
                 >
                   <SidebarMenuButton
                     onClick={() => {
-                      setCurrentChatId(chat.id);
-                      isMobile && toggleSidebar();
+                      if (currentChatId != chat.id) {
+                        setCurrentChatId(chat.id);
+                        isMobile && toggleSidebar();
+                      }
                     }}
                     className="flex items-center justify-between"
                   >
@@ -105,10 +107,7 @@ export function AppSidebar() {
                       {chat.title}
                     </span>
                     <Popover>
-                      <PopoverTrigger
-                        asChild
-                        onClick={(event) => event.stopPropagation()}
-                      >
+                      <PopoverTrigger asChild>
                         <Ellipsis
                           size={14}
                           strokeWidth={1.25}

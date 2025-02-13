@@ -45,11 +45,10 @@ export function QuizContent() {
     }
   };
 
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
-  };
+  const handlePrevious = () => {};
+  if (currentQuestionIndex > 0) {
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
+  }
 
   const handleSubmit = () => {
     if (!quiz) return;
