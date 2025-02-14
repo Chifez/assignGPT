@@ -30,9 +30,6 @@ export default function Chat() {
 
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  // const [previewOpen, setPreviewOpen] = useState(false);
-  // const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
-  const isMobile = useIsMobile();
 
   const {
     messages,
@@ -45,36 +42,6 @@ export default function Chat() {
   } = useChat({
     api: '/api/chat',
     initialMessages,
-    // onFinish: async (message) => {
-    //   if (!currentChatId) {
-    //     const userMessage: Message = {
-    //       id: nanoid(),
-    //       role: 'user',
-    //       content: input,
-    //     };
-    //     const firstMessage: Message[] = [userMessage, message];
-    //     const titleResponse = await fetch('/api/title', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         messages: firstMessage,
-    //       }),
-    //     });
-
-    //     const { title } = await titleResponse.json();
-
-    //     if (title) {
-    //       const chatId = await createChat(title.trim(), firstMessage);
-    //       setCurrentChatId(chatId);
-    //     }
-    //   } else {
-    //     await saveMessage(currentChatId, message);
-    //   }
-    //   console.log('ui messages', messages, message);
-    // },
-
     onFinish: async (message) => {
       if (!currentChatId) {
         const userMessage: Message = {
@@ -84,18 +51,13 @@ export default function Chat() {
         };
         const firstMessage: Message[] = [userMessage, message];
 
-        // 1️⃣ Optimistically update UI
-        const tempChatId = nanoid();
-        setMessages([...messages, userMessage, message]);
+        setMessages([...messages, userMessage, message]); // might not be needed in this current version
 
-        // 2️⃣ Create chat first
         const chatId = await createChat('New Chat', firstMessage);
         setCurrentChatId(chatId);
 
-        // 🔄 Fetch chats immediately so the sidebar updates
         fetchChats();
 
-        // 3️⃣ Generate title in the background
         const titleResponse = await fetch('/api/title', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
