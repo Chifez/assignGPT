@@ -21,7 +21,7 @@ export interface QuizCardProps {
   };
   index: number;
   handleSelectAnswer: (index: number, answer: string | string[]) => void;
-  userAnswer: string | string[] | undefined;
+  userAnswer?: string | string[] | undefined;
 }
 
 export interface ChatInputProps {
@@ -57,6 +57,7 @@ export interface History {
 export interface QuizProps {
   title: string;
   numQuestions: number;
+  questions: Question[];
   link: string;
   description?: string;
   token: string;
@@ -111,6 +112,8 @@ export interface ChatState {
   createChat: (title: string, firstMessage: Message[]) => Promise<string>;
   clearChats: () => void;
   // clearMessages: () => void;
+  deleteChat: (id: string) => Promise<null | undefined>;
+  updateChatTitle: (id: string, title: string) => Promise<void>;
   saveMessage: (
     chatId: string,
     message: Message | Message[],

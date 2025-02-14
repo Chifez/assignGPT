@@ -13,6 +13,7 @@ import { Message } from 'ai';
 import { nanoid } from 'nanoid';
 import AboutCard from '../cards/aboutcard';
 import { useUserStore } from '@/utils/store/userStore';
+import { createClient } from '@/utils/supabase/client';
 
 export default function Chat() {
   const {
@@ -21,15 +22,14 @@ export default function Chat() {
     createChat,
     saveMessage,
     fetchMessages,
+    fetchChats,
+    updateChatTitle,
   } = useChatStore();
 
   const user = useUserStore((state) => state.user);
 
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  // const [previewOpen, setPreviewOpen] = useState(false);
-  // const [selectedQuizId, setSelectedQuizId] = useState<string | null>(null);
-  const isMobile = useIsMobile();
 
   const {
     messages,
@@ -50,12 +50,27 @@ export default function Chat() {
           content: input,
         };
         const firstMessage: Message[] = [userMessage, message];
-        const chatId = await createChat(input, firstMessage);
+
+        setMessages([...messages, userMessage, message]); // might not be needed in this current version
+
+        const chatId = await createChat('New Chat', firstMessage);
         setCurrentChatId(chatId);
+
+        fetchChats();
+
+        const titleResponse = await fetch('/api/title', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: firstMessage }),
+        });
+
+        const { title } = await titleResponse.json();
+        if (title) {
+          updateChatTitle(chatId, title.trim());
+        }
       } else {
         await saveMessage(currentChatId, message);
       }
-      console.log('ui messages', messages, message);
     },
     onError: (error) => {
       console.error('Chat error:', error);
@@ -87,12 +102,6 @@ export default function Chat() {
       if (currentChatId) {
         await saveMessage(currentChatId, userMessage);
       }
-      // If new chat, create it first and generate a chatId
-      // if (!currentChatId) {
-      //   console.log('message here', messages, userMessage);
-      //   const chatId = await createChat(input, [userMessage]);
-      //   setCurrentChatId(chatId);
-      // }
     }
   };
 
@@ -161,7 +170,7 @@ export default function Chat() {
 
       {/* Input container */}
       <div className="sticky bottom-0 z-40 flex-shrink-0 bg-gradient-to-t from-white via-white to-transparent pb-4 px-4 py-2">
-        {!currentChatId && <AboutCard />}
+        {messages.length <= 0 && <AboutCard />}
         <div className="max-w-xl mx-auto">
           <FilePreview files={files} onRemove={handleFileRemove} />
           <ChatInput

@@ -16,7 +16,8 @@ export async function signup(formData: FormData) {
 
   if (error) {
     console.log('error', error);
-    return redirect('/error');
+    throw new Error('Oops an error occured');
+    // return redirect('/auth/error');
   }
 
   // Show success toast and return user data
@@ -40,7 +41,8 @@ export async function login(formData: FormData) {
 
   if (error) {
     console.log('error', error);
-    return redirect('/error');
+    throw new Error('Oops an error occured');
+    // redirect('/auth/error');
   }
 
   // Show success toast and return user data
@@ -49,4 +51,24 @@ export async function login(formData: FormData) {
     message: 'Login successful!',
     user: data.user,
   };
+}
+
+export async function loginWithGoogle() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `http://${process.env.NEXT_PUBLIC_URL}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    console.log('error', error);
+    throw new Error('Oops an error occured');
+  }
+
+  if (data.url) {
+    redirect(data.url); // use the redirect API for your server framework
+  }
 }

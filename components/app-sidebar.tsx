@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { LogOut, Plus } from 'lucide-react';
+import { Ellipsis, LogOut, Plus } from 'lucide-react';
 
 import {
   Sidebar,
@@ -16,6 +16,12 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+
 import { useUserStore } from '@/utils/store/userStore';
 import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
@@ -23,8 +29,14 @@ import { Button } from './ui/button';
 import { useChatStore } from '@/utils/store/chatStore';
 
 export function AppSidebar() {
-  const { chats, fetchChats, setCurrentChatId, clearChats, currentChatId } =
-    useChatStore();
+  const {
+    chats,
+    fetchChats,
+    setCurrentChatId,
+    clearChats,
+    deleteChat,
+    currentChatId,
+  } = useChatStore();
   const { user, setUser } = useUserStore();
   const { toggleSidebar, isMobile } = useSidebar();
 
@@ -39,6 +51,15 @@ export function AppSidebar() {
     toast.success('Signed out successfully');
   };
 
+  const deleteCurrentChat = async (id: string) => {
+    const chatPromise = deleteChat(id);
+
+    await toast.promise(chatPromise, {
+      loading: 'Deleting chat...',
+      success: 'Chat deleted successfully!',
+      error: 'Oops, something went wrong!',
+    });
+  };
   useEffect(() => {
     fetchChats();
   }, [user]);
@@ -66,7 +87,7 @@ export function AppSidebar() {
               {chats.map((chat) => (
                 <SidebarMenuItem
                   key={chat.id}
-                  className={`${
+                  className={` ${
                     currentChatId != null && currentChatId == chat.id
                       ? 'bg-sidebar-accent text-sidebar-accent-foreground'
                       : ''
@@ -74,11 +95,31 @@ export function AppSidebar() {
                 >
                   <SidebarMenuButton
                     onClick={() => {
-                      setCurrentChatId(chat.id);
-                      isMobile && toggleSidebar();
+                      if (currentChatId != chat.id) {
+                        setCurrentChatId(chat.id);
+                        isMobile && toggleSidebar();
+                      }
                     }}
+                    className="flex items-center justify-between"
                   >
-                    <span>{chat.title}</span>
+                    <span className="overflow-hidden text-nowrap">
+                      {chat.title}
+                    </span>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Ellipsis
+                          size={14}
+                          strokeWidth={1.25}
+                          className="invisible group-hover/menu-item:visible text-black"
+                        />
+                      </PopoverTrigger>
+                      <PopoverContent
+                        className="w-fit p-2 text-xs cursor-pointer"
+                        onClick={() => deleteCurrentChat(chat.id)}
+                      >
+                        delete
+                      </PopoverContent>
+                    </Popover>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

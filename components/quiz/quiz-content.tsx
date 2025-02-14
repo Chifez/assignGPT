@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { QuizCard } from '@/components/cards/quizcard';
 import { Button } from '@/components/ui/button';
@@ -13,17 +13,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { QuizData } from '@/utils/types';
-import { ArrowLeft } from 'lucide-react';
 import { QuizLoader } from '../chat/quiz-loader';
-import { useUserStore } from '@/utils/store/userStore';
 import { toast } from 'sonner';
 
 export function QuizContent() {
-  const searchParams = useSearchParams();
+  const { token } = useParams();
   const router = useRouter();
-  const token = searchParams.get('token');
+
   const supabase = createClient();
-  const user = useUserStore((state) => state.user);
 
   const [quiz, setQuiz] = useState<QuizData | undefined>(undefined);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -40,18 +37,18 @@ export function QuizContent() {
   };
 
   const handleNext = () => {
+    console.log('clicked');
     if (quiz && currentQuestionIndex < quiz.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => {
+        console.log('clicked here', prevIndex + 1);
+        return prevIndex + 1;
+      });
     }
-  };
-
-  const goBack = () => {
-    router.back();
   };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -77,12 +74,11 @@ export function QuizContent() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (token && user) {
+      if (token) {
         const { data, error } = await supabase
           .from('quizzes')
           .select('*')
           .eq('id', token)
-          .eq('user_id', user.id)
           .single();
 
         if (error) {
@@ -114,15 +110,7 @@ export function QuizContent() {
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   return (
-    <div className="relative py-4  mt-4">
-      <Button
-        variant="ghost"
-        onClick={goBack}
-        className="flex items-center gap-2 absolute top-0 left-2"
-      >
-        <ArrowLeft />
-        Go back
-      </Button>
+    <div className="relative py-4 mt-4">
       <Card className="w-full max-w-4xl mx-auto mt-8">
         <CardHeader>
           <CardTitle>{quiz.title}</CardTitle>

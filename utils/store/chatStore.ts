@@ -43,6 +43,21 @@ export const useChatStore = create<ChatState>((set, get) => ({
       currentChatId: null,
     });
   },
+  deleteChat: async (id: string) => {
+    const supabase = createClient();
+    const { data, error } = await supabase.from('chats').delete().eq('id', id);
+
+    if (error) {
+      console.error('Error fetching chats:', error);
+      return;
+    }
+
+    set((state) => ({
+      currentChatId: state.currentChatId === id ? null : state.currentChatId,
+      chats: state.chats.filter((chat) => chat.id !== id), // Remove chat from local state
+    }));
+    return data;
+  },
 
   fetchChats: async () => {
     const supabase = createClient();
@@ -70,6 +85,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({ chats: data });
   },
 
+  updateChatTitle: async (id: string, title: string) => {
+    const supabase = createClient();
+    await supabase.from('chats').update({ title }).eq('id', id);
+    get().fetchChats();
+  },
   createChat: async (title: string, firstMessage: Message[]) => {
     const supabase = createClient();
 
@@ -99,7 +119,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       throw chatError;
     }
 
-    get().fetchChats();
+    // get().fetchChats();
     return chat.id;
   },
 
