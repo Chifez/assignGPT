@@ -27,7 +27,6 @@ import { createClient } from '@/utils/supabase/client';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
 import { useChatStore } from '@/utils/store/chatStore';
-import { EllipsisVertical } from 'lucide-react';
 
 export function AppSidebar() {
   const {

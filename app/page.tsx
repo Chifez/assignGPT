@@ -12,18 +12,6 @@ export default function Home() {
         <Navigators />
         <div className="flex flex-row h-[calc(100vh_-_theme(spacing.16))]">
           <Chat />
-          {/* TODO: Preview quiz */}
-          {/* <div
-            className={`border-l transition-transform duration-200 ${
-              isOpen ? 'translate-x-0 w-[30%]' : 'translate-x-full w-0'
-            }`}
-          >
-            <QuizPreview
-              quizId={quizId!}
-              isOpen={isOpen}
-              onClose={closePreview}
-            />
-          </div> */}
         </div>
       </main>
     </SidebarProvider>

@@ -2,10 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
-import { QuizPreviewProvider } from '@/hooks/use-quiz-preview';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { Navigators } from '@/components/navigators';
-import { AppSidebar } from '@/components/app-sidebar';
 import { AuthProvider } from '@/components/providers/auth-provider';
 
 const geistSans = Geist({
@@ -34,11 +30,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          {/* <QuizPreviewProvider> */}
           {children}
           <Toaster richColors />
-
-          {/* </QuizPreviewProvider> */}
         </AuthProvider>
       </body>
     </html>

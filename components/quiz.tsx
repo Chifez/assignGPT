@@ -8,13 +8,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ClipboardList, Eye, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Badge } from './ui/badge';
 import { QuizProps } from '@/utils/types';
-import { useState } from 'react';
 import Link from 'next/link';
-
-import { QuizCard } from './cards/quizcard';
 import { QuizCarousel } from './quiz/quiz-carousel';
 
 export function Quiz({ title, numQuestions, questions, link }: QuizProps) {
