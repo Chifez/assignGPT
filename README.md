@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **AssignGPT** 🎓✨  
+*A ChatGPT-powered quiz generator built with Next.js, Vercel AI SDK, Generative UI, Supabase, and shadcn/ui.*
 
-## Getting Started
+![AssignGPT Banner](https://github.com/user-attachments/assets/fb80b023-b4a8-42cb-a05d-1d97eb8a95b9) <!-- Optional: Add a banner image -->
 
-First, run the development server:
+## 🚀 **Live Demo**  
+[🔗 Click here to try AssignGPT](https://assign-gpt.vercel.app/)  
 
+---
+
+## 📌 **Overview**  
+AssignGPT is an AI-powered quiz generator designed to help users create quizzes effortlessly. Whether for education, training, or just for fun, AssignGPT allows users to generate quizzes dynamically using AI.  
+
+🔹 **Instant quiz generation** using AI  
+🔹 **Customizable quiz topics**  
+🔹 **Multiple-choice & open-ended questions**  
+🔹 **User-friendly interface with shadcn/ui**  
+🔹 **Built for speed & scalability with Next.js & Supabase**  
+
+---
+
+## ⚡ **Tech Stack**  
+- **Next.js** – Full-stack React framework  
+- **Vercel AI SDK + Generative UI** – AI-powered chat & UI components  
+- **Supabase** – Backend database & authentication  
+- **shadcn/ui** – Elegant UI components  
+
+---
+
+## 📸 **Screenshots**  
+<!-- Replace with actual screenshots -->  
+| Quiz Generation | Quiz View | Result Page |
+|---------------|------------|------------|
+| ![Quiz Creation](https://github.com/user-attachments/assets/b69391da-b89d-49f0-969c-b4651aa98ee9) | ![Quiz Taking](https://github.com/user-attachments/assets/bb4d9439-9f26-42a9-99c5-8a32b1ae63d2) | ![Results](https://github.com/user-attachments/assets/c7f5b29c-d97b-4424-83c0-f476a389b726)
+
+---
+
+## 🛠️ **Installation & Setup**
+
+Clone the repo and install dependencies:  
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/AssignGPT.git
+cd AssignGPT
+npm install  # or pnpm install / yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To work in development you need supabase cli and and docker installed
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Install supabase cli**
+```bash
+npm install -g supabase-cli
+```
+Then start supabase
+```
+supabase start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a **.env.local** file and add the following environment variables:  
+```env
+OPENAI_API_KEY=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_URL=
+SUPABASE_DB_PASSWORD=
+SUPABASE_ACCESS_TOKEN=
+# to use Oauth
+SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET=
+SUPABASE_AUTH_GOOGLE_CLIENT_ID=
+```
 
-## Learn More
+Run the development server:  
+```bash
+npm run dev # or yarn dev
+```
+---
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 **Features**  
+✅ AI-generated quizzes  
+✅ Save and manage quizzes in Supabase  
+✅ User authentication (Supabase Auth)  
+✅ Responsive UI with shadcn/ui  
+✅ Seamless AI interaction with Vercel AI SDK  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🙌 **Contributing**  
+We welcome contributions! Feel free to open an issue or submit a pull request.  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Fork the repo**  
+2. **Create a new branch**: `git checkout -b feature-branch`  
+3. **Commit changes**: `git commit -m "Added new feature"`  
+4. **Push to GitHub**: `git push origin feature-branch`  
+5. **Create a pull request**  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📄 **License**  
+This project is licensed under the **MIT License**.  
+
+---
+
+## ⭐ **Support the Project**  
+If you like **AssignGPT**, give this repo a ⭐ and share it with others!  
+
