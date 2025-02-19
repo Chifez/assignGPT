@@ -23,7 +23,7 @@ export const QuizCarousel = ({
       <CarouselContent>
         {questions?.map((quiz, index) => (
           <CarouselItem key={index}>
-            <Card className="w-full mx-auto mt-2">
+            <Card className="w-full mx-auto mt-2 shadow-none border-none">
               <CardHeader className="pb-1">
                 <p className="text-sm text-muted-foreground">
                   Question {index + 1} of {numQuestions}

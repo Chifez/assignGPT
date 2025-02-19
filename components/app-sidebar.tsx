@@ -69,7 +69,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="flex flex-col items-start mt-2 mb-8 space-y-2">
             <div className="w-full flex items-center justify-between font-semibold text-xl">
-              <p className="text-black">AssignGPT</p>
+              <p className="text-black">QuizmeGPT</p>
               <Button
                 variant="ghost"
                 onClick={() => {

@@ -3,6 +3,7 @@ import { ResponseActions } from './response-actions';
 import { Quiz } from '../quiz';
 import { QuizLoader } from './quiz-loader';
 import { MessageItemProps } from '@/utils/types';
+import { useEffect, useRef } from 'react';
 
 export function MessageItem({
   message,
@@ -14,6 +15,11 @@ export function MessageItem({
     isLastMessage && isLoading && message.role === 'assistant';
   const showActions =
     message.role === 'assistant' && (!isLastMessage || !isLoading);
+  const messageRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [message]);
 
   return (
     <div className="whitespace-pre-wrap flex flex-col mb-5">
@@ -56,6 +62,7 @@ export function MessageItem({
       {showActions && (
         <ResponseActions content={message.content} messageId={message.id} />
       )}
+      <div ref={messageRef} />
     </div>
   );
 }

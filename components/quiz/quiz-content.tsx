@@ -110,8 +110,8 @@ export function QuizContent() {
   const currentQuestion = quiz.questions[currentQuestionIndex];
 
   return (
-    <div className="relative py-4 mt-4">
-      <Card className="w-full max-w-4xl mx-auto mt-8">
+    <div className="flex items-center h-screen w-full justify-center relative">
+      <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle>{quiz.title}</CardTitle>
           <p className="text-sm text-muted-foreground">
